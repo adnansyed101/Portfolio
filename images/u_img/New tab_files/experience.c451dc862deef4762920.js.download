@@ -1,0 +1,1026 @@
+!function(){"use strict";var e,t,a,n,i,o={64306:function(e,t,a){a.d(t,{m:function(){return i}});function n(e){const t=e;return void 0!==t.clientValue?t.clientValue:Object.keys(e).reduce(((t,a)=>Object.assign(Object.assign({},t),{[a]:n(e[a])})),{})}class i{constructor(e,t){this.spec=e,this.qspPrefix=t||"rd"}get verParam(){return`${this.qspPrefix}.ver`}get data(){return void 0===this.memo&&(this.memo=n(this.spec.spec)),this.memo}loadQueryParams(e){if(void 0!==this.memo)throw"overwriting existing query string parameters.";const t=e.get([this.qspPrefix,"ver"].join("."));if(t!==this.spec.ver)throw`unmatched spec version: expected "${this.spec.ver}" but got ${t}.`;this.memo={},e.forEach(((e,t)=>{if(!t.startsWith(this.qspPrefix))return;if(t===this.verParam)return;const a=t.split(".").slice(1);let n=this.memo;a.forEach(((t,i)=>{let o={};if(i===a.length-1)try{o=()=>JSON.parse(e)}catch(e){throw this.memo=void 0,e}Object.prototype.hasOwnProperty.call(n,t)||(n[t]=o),"object"!=typeof o||(n=n[t])}))}))}getURLSearchParams(){const e=new URLSearchParams,t=(a,n)=>{Object.keys(a).forEach((i=>{const o=a[i],s=[...n,i];"object"!=typeof o?e.append(s.join("."),JSON.stringify(o())):t(o,s)}))};return t(this.data,[this.qspPrefix]),e.sort(),e.append(this.verParam,this.spec.ver),e}getSerializedData(){return this.getURLSearchParams().toString()}}},60184:function(e,t,a){a.d(t,{S:function(){return D}});var n=a(33940),i=a(89346),o=a(87697),s=a(65620),c=a(33832),d=a(37802),r=a(16517);class l extends i.H{constructor(){super(...arguments),this.useFastAnchoredRegion=!0,this.fixedPosition=!1,this.defaultVerticalPosition="bottom",this.defaultHorizontalPosition="end",this.autoFocus=!0,this.isUpdatingPosition=!1,this.isBingHp="bingHomepage"===r.jG.AppType,this.keyDownHandler=e=>(e.keyCode===c.Lp?(this.referrerButton&&this.referrerButton.focus(),this.$emit("dismiss-menu")):e.keyCode===c.RN&&(this.customTabEventHandler?this.customTabEventHandler(this,e):this.tabEventHandler(e)),!0),this.updatePositionManually=()=>{this.updatePosition()},this.tabEventHandler=e=>{const t=this.fluentMenu.children.length,a=e.target;Array.from(this.fluentMenu.children).map(((n,i)=>{if(n===a){const a=(i+(e.shiftKey?-1:1)+t)%t;this.fluentMenu.children[a].focus()}}))},this.initMenuPositioning=()=>{this.setMenuPosition(),document.addEventListener("scroll",this.updatePosition),window.addEventListener("resize",this.updatePosition)},this.setMenuPosition=()=>{var e;const t=this.referrerButton.getBoundingClientRect(),a=(null===(e=this.menu.offsetParent)||void 0===e?void 0:e.offsetTop)||0;let n,i=0;this.isBingHp&&(i=this.menu.offsetParent.getBoundingClientRect().top+window.scrollY),n="top"===this.defaultVerticalPosition?`top:${t.top+window.scrollY-2-this.fluentMenu.clientHeight-a}px;`:t.bottom+this.fluentMenu.clientHeight>window.innerHeight?`top:${t.top+window.scrollY-2-this.fluentMenu.clientHeight-a-i}px;`:`top:${t.bottom+window.scrollY+1-a-i}px;`,this.menu.setAttribute("style",`position:absolute;${n}${this.getHorizontalPosition(t)}`),this.isUpdatingPosition=!1},this.updatePosition=(0,d.Z)((()=>{this.isUpdatingPosition||(window.requestAnimationFrame((()=>{this.setMenuPosition()})),this.isUpdatingPosition=!0)}),300)}connectedCallback(){super.connectedCallback(),this.fluentMenu&&(this.useFastAnchoredRegion||this.initMenuPositioning(),this.autoFocus&&this.fluentMenu&&this.fluentMenu.children.length&&(setTimeout((()=>{this.fluentMenu.children[0].focus()}),100),this.$emit("shown-menu")))}disconnectedCallback(){super.disconnectedCallback(),this.useFastAnchoredRegion||(document.removeEventListener("scroll",this.updatePosition),window.removeEventListener("resize",this.updatePosition))}useFastAnchoredRegionChanged(e,t){!1===t&&this.isConnected&&this.initMenuPositioning()}getHorizontalPosition(e){const t=document.documentElement.clientWidth;return"rtl"===document.dir||"start"===this.defaultHorizontalPosition?t-e.right+this.fluentMenu.clientWidth<=window.innerWidth?`right:${t-e.right}px`:`left:${e.left}px;`:e.left+this.fluentMenu.clientWidth<=window.innerWidth?`left:${e.left}px;`:`right:${t-e.right}px;`}}(0,n.gn)([o.LO],l.prototype,"menuItems",void 0),(0,n.gn)([o.LO],l.prototype,"referrerButton",void 0),(0,n.gn)([o.LO],l.prototype,"useFastAnchoredRegion",void 0),(0,n.gn)([(0,s.Lj)({mode:"boolean"})],l.prototype,"fixedPosition",void 0),(0,n.gn)([s.Lj],l.prototype,"defaultVerticalPosition",void 0),(0,n.gn)([s.Lj],l.prototype,"defaultHorizontalPosition",void 0),(0,n.gn)([(0,s.Lj)({mode:"boolean"})],l.prototype,"autoFocus",void 0),(0,n.gn)([(0,s.Lj)({mode:"boolean"})],l.prototype,"isWindowsDashboard",void 0);var b=a(56201),f=a(40082),p=a(15564),u=a(15933),g=a(53046);const h=g.i`
+    :host {
+        z-index: var(--menu-z-index, 700);
+    }
+
+    :host(:focus) {
+        outline: none;
+    }
+
+    :host([isWindowsDashboard]) {
+        --control-corner-radius: 8;
+    }
+
+    fluent-menu {
+        box-shadow: 0 2.4px 7.2px rgba(0, 0, 0, 0.18), 0 12.8px 28.8px rgba(0, 0, 0, 0.22);
+        max-width: var(--menu-max-width, 275px);
+        min-width: var(--menu-min-width, 240px);
+    }
+
+    fluent-anchored-region {
+        z-index: 700;
+    }
+
+    svg {
+        fill: currentColor;
+    }
+
+    .icon {
+        align-items: center;
+        display: flex;
+    }
+
+    :host(:${b.b}) {
+        outline: none;
+    }
+
+    fluent-menu-item::part(content) {
+        width: 100%;
+        overflow: none;
+    }
+
+    .menu-item {
+        grid-template-columns: minmax(32px, auto) 1fr minmax(32px, auto);
+    }
+
+    .menu-item-divider {
+        margin-bottom: 6px;
+        border-top-color: ${p.c1L}
+    }
+    .menu-item-text {
+        padding-inline-start: 12px;
+        color: ${p.Q5n};
+        font-size: 12px;
+    }
+    `.withBehaviors((0,f.vF)(g.i`
+                .menu-item[isNavigation] {
+                    color: ${u.H.LinkText};
+                }
+
+                .menu-item[isNavigation]:hover {
+                    color: ${u.H.HighlightText};
+                }
+            `));var m=a(39181),v=a(13988),w=a(58952),y=a(18864),x=a(70188);const C=m.d`
+${(0,v.g)((e=>e.isDivider),m.d`
+    <fluent-divider class="menu-item-divider"></fluent-divider>`)}
+${(0,v.g)((e=>e.isText),m.d`
+    <div class="menu-item-text" role="presentation">${e=>e.title}</div>`)}
+${(0,v.g)((e=>!e.isDivider&&!e.isText),m.d`
+    <fluent-menu-item
+        aria-label="${e=>e.ariaLabel?e.ariaLabel:e.title}"
+        class="menu-item"
+        part="menu-item"
+        @change=${(e,t)=>e.onClick(t.event)}
+        tabindex="0"
+        role="menuitem"
+        exportparts="start: actions-menu-start menu-item"
+        id="${e=>e.id}"
+        ?disabled="${e=>e.disabled}"
+        isNavigation="${e=>e.isNavigation}"
+        ${(0,x.X)((e=>e.telemetryTag))}
+        data-customhandled=${e=>e.dataCustomHandled||void 0}
+    >
+        ${(0,v.g)((e=>e.glyph),m.d`<span slot="start" class="icon" aria-hidden="true">${e=>m.d`${e.glyph}`}</span>`)}
+        ${e=>e.title}
+    </fluent-menu-item>`)}
+`,S=m.d`
+<fluent-menu ${(0,w.i)("fluentMenu")}
+    @keydown=${(e,t)=>e.keyDownHandler(t.event)}
+    class="menu"
+    part="menu">
+    ${(0,y.rx)((e=>e.menuItems),C)}
+</fluent-menu>`,_=m.d`
+<template id="actions-menu" ${(0,w.i)("menu")}>
+    ${(0,v.g)((e=>e.useFastAnchoredRegion),m.d`
+    <fluent-anchored-region
+        :anchorElement=${e=>e.referrerButton||document.body}
+        fixed-placement="${e=>e.fixedPosition}"
+        vertical-positioning-mode="dynamic"
+        vertical-default-position="${e=>e.defaultVerticalPosition}"
+        horizontal-positioning-mode="dynamic"
+        horizontal-default-position="${e=>e.defaultHorizontalPosition}"
+        horizontal-inset="true"
+    >
+       ${S}
+    </fluent-anchored-region>`)}
+    ${(0,v.g)((e=>!e.useFastAnchoredRegion),m.d`${S}`)}
+</template>`;var k=a(41751),P=a(34685),T=a(99344),F=a(73896),L=a(50323),A=a(57905);let D=class extends l{};D=(0,n.gn)([(0,i.M)({name:"msn-actions-menu",template:_,styles:h,shadowOptions:{delegatesFocus:!0}})],D),(0,k.z)().withShadowRootMode("closed").withElementDisambiguation((()=>A.h.ignoreDuplicate)).register((0,P.ue)(),(0,T.q$)(),(0,F.H5)(),(0,L.tT)())},84829:function(e,t,a){a.d(t,{q:function(){return h}});var n=a(33940),i=a(89346),o=a(65620);class s extends i.H{checkSVGImage(){return this.image.indexOf("image/svg+xml")>-1||this.image.indexOf(".svg")>-1}connectedCallback(){super.connectedCallback(),this.imageElement=this.shadowRoot.getElementById("company-logo");const e=new Image;e.onload=()=>{this.imageElement.setAttribute("width",e.width.toString()),this.imageElement.setAttribute("height",e.height.toString())},e.src=this.image}}(0,n.gn)([(0,o.Lj)({attribute:"companylogo-image"})],s.prototype,"image",void 0),(0,n.gn)([(0,o.Lj)({mode:"boolean",attribute:"backplate-image"})],s.prototype,"backplateImage",void 0),(0,n.gn)([(0,o.Lj)({mode:"boolean",attribute:"horizontal-flip"})],s.prototype,"horizontalFlip",void 0);var c=a(15564),d=a(70783),r=a(53046);const l=r.i`
+.company-logo-backplate {
+    left: 88px;
+}
+.company-logo-flip {
+    left: initial !important;
+    right: 88px;
+}
+`,b=r.i`
+.company-logo-backplate {
+    right: 88px;
+}
+.company-logo-flip {
+    left: 88px;
+    right: initial !important;
+}
+`,f=r.i`
+    .company-logo-backplate {
+        min-width: 100px;
+        background: ${c.c1L};
+        border-radius: 100px;
+        justify-content: center;
+        display: flex;
+        padding: 12px 17px;
+    }
+
+    .company-logo-image {
+        max-height: 48px;
+        max-width: 180px;
+        height: auto;
+        width: auto;
+        z-index: 0;
+    }
+
+    .company-logo-svg-image {
+        max-height: 24px;
+        max-width: 114px;
+        z-index: 0;
+    }
+    `.withBehaviors(new d.O(l,b));var p=a(39181),u=a(13988);const g=p.d`
+    ${(0,u.g)((e=>e.backplateImage),p.d`
+        <div class="company-logo-backplate ${e=>e.horizontalFlip?" company-logo-flip":""}">
+            <img id="company-logo" class=${e=>e.checkSVGImage()?"company-logo-svg-image":"company-logo-image"} src='${e=>e.image}' alt='No Image'> </img>
+        </div>
+    `)}
+    ${(0,u.g)((e=>!e.backplateImage),p.d`
+        <img id="company-logo" class=${e=>e.checkSVGImage()?"company-logo-svg-image":"company-logo-image"} src='${e=>e.image}' alt='No Image'> </img>
+    `)}
+`;let h=class extends s{};h=(0,n.gn)([(0,i.M)({name:"enterprise-company-logo",template:g,styles:f})],h)},20899:function(e,t,a){a.d(t,{O:function(){return x}});var n=a(33940),i=a(26415),o=a(84446),s=a(65620),c=a(92773);let d=class extends o.F{constructor(){super(...arguments),this.privacyUrl="",this.id="",this.adLabelText="Ad",this.nativeAdAdLabelText="",this.type="greenLabel",this.isDynamicRendering=!0,this.shouldAdjustGap=!1,this.cardLayout="default",this.telemetryMetadata="",this.adLabelTextOpacity="0.7",this.color="var(--neutral-foreground-rest)",this.isFeedV2=!1,this.isSeasonal=!1}connectedCallback(){super.connectedCallback()}};(0,n.gn)([(0,s.Lj)({attribute:"privacy-url"})],d.prototype,"privacyUrl",void 0),(0,n.gn)([s.Lj],d.prototype,"id",void 0),(0,n.gn)([(0,s.Lj)({attribute:"ad-label-text"})],d.prototype,"adLabelText",void 0),(0,n.gn)([(0,s.Lj)({attribute:"native-ad-ad-label-text"})],d.prototype,"nativeAdAdLabelText",void 0),(0,n.gn)([(0,s.Lj)({attribute:"type"})],d.prototype,"type",void 0),(0,n.gn)([(0,s.Lj)({mode:"boolean",attribute:"is-dynamic-rendering"})],d.prototype,"isDynamicRendering",void 0),(0,n.gn)([(0,s.Lj)({mode:"boolean",attribute:"should-adjust-gap"})],d.prototype,"shouldAdjustGap",void 0),(0,n.gn)([(0,s.Lj)({attribute:"layout"})],d.prototype,"layout",void 0),(0,n.gn)([(0,s.Lj)({attribute:"card-layout"})],d.prototype,"cardLayout",void 0),(0,n.gn)([(0,s.Lj)({attribute:"tel-metadata"})],d.prototype,"telemetryMetadata",void 0),(0,n.gn)([(0,s.Lj)({attribute:"ad-label-text-opacity"})],d.prototype,"adLabelTextOpacity",void 0),(0,n.gn)([(0,s.Lj)({attribute:"color"})],d.prototype,"color",void 0),(0,n.gn)([(0,s.Lj)({mode:"boolean",attribute:"is-feed-v2"})],d.prototype,"isFeedV2",void 0),(0,n.gn)([(0,s.Lj)({mode:"boolean",attribute:"is-seasonal"})],d.prototype,"isSeasonal",void 0),d=(0,n.gn)([(0,c.uj)(i.EoX,"msn-native-ad-ad-label")],d);var r=a(89346),l=a(78562),b=a(67620),f=a(53046);const p=f.i`
+    .native-ad-label-dr-wrapper {
+        --ad-label-fill-grey: #595959;
+        --ad-label-color-grey: #FFF;
+        --ad-label-fill-green: #1E6525;
+        --ad-label-color-white: #FFF;
+        --outline-width: 1;
+        --control-corner-radius: 2;
+        outline: none;
+        pointer-events: auto;
+        font-family: var(--body-font);
+        font-size: var(--type-ramp-minus-2-font-size);
+        display: flex;
+    }
+
+    .ndr, .gap {
+        margin-inline-end: 8px;
+    }
+
+    .native-ad-label-dr{
+        box-sizing: border-box;
+        padding: 0 6px;
+        display: inline-block;
+        line-height: 14px;
+        border-radius: calc(var(--control-corner-radius) * 1px);
+        text-decoration: none;
+        border: calc(var(--stroke-width) * 1px) solid transparent;
+    }
+
+    .grey {
+        background: var(--ad-label-fill-grey);
+        color: var(--ad-label-color-grey);
+    }
+
+    .green {
+        background: var(--ad-label-fill-green);
+        color: var(--ad-label-color-white);
+    }
+
+    .white {
+        background: white;
+        color: lightgrey;
+        border: calc(var(--stroke-width) * 1px) solid white;
+    }
+
+    .transparent-infopane {
+        color: white;
+        border: calc(var(--stroke-width) * 1px) solid white;
+    }
+
+    .transparent-river {
+        color: lightgrey;
+        border: calc(var(--stroke-width) * 1px) solid lightgrey;
+    }
+
+    .ad-label-topsite {
+        box-sizing: border-box;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--top-site-color)
+    }
+
+    .ad-label-big {
+        padding: 0 3px;
+        border: calc(var(--stroke-width) * 1px) solid var(--neutral-foreground-hint);
+        border-radius: 4px;
+        font-size: 11px;
+        margin-left: 4px;
+        line-height: 14px;
+    }
+
+    .ad-label-small {
+        padding: 0 2px;
+        border: calc(var(--stroke-width) * 1px) solid var(--neutral-foreground-hint);
+        border-radius: 4px;
+        font-size: 9px;
+        margin-left: 4px;
+        line-height: 10px;
+    }
+
+    .ad-txt-big {
+        font-size: 11px;
+        line-height: 14px;
+        margin-left: 2px;
+    }
+
+    .ad-txt-small {
+        font-size: 9px;
+        line-height: 9px;
+        margin-left: 2px;
+    }
+
+    .ad-slug1 {
+        color: var(--neutral-foreground-rest);
+        border: 0.5px solid var(--neutral-foreground-rest);
+    }
+
+    .ad-slug2 {
+        color: transparent;
+        opacity: 0.3;
+        border: 0.5px solid var(--neutral-foreground-rest);
+        position: absolute;
+    }
+
+    .ad-slug2-text.is-feed-v2-text::before {
+        border-color: #292929;
+    }
+
+    .ad-slug2-text.is-feed-v2-text {
+        color: #292929;
+    }
+
+    .ad-slug2-text.is-seasonal-style::before {
+        border-color: #000000;
+        opacity: 1;
+    }
+
+    .ad-slug2-text.is-seasonal-style {
+        color: #000000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .ad-slug2-text.is-feed-v2-text::before {
+            border-color: #FFFFFF;
+        }
+
+        .ad-slug2-text.is-feed-v2-text {
+            color: #FFFFFF;
+        }
+
+        .ad-slug2-text.is-seasonal-style::before {
+            border-color: #FFFFFF;
+            opacity: 1;
+        }
+    
+        .ad-slug2-text.is-seasonal-style {
+            color: #FFFFFF;
+        }
+
+    }
+`.withBehaviors(new l.g("layoutStyle"),new b.j(["adLabelTextOpacity","color"],(e=>f.i`
+            .ad-slug2-text {
+                --control-corner-radius: 4;
+                position: relative;
+                padding: 1px 5px;
+                text-decoration: none;
+                line-height: 16px;
+                opacity: ${e.adLabelTextOpacity};
+                color: ${e.color};
+            }
+
+            .ad-slug2-text::before {
+                content: "";
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0.3;
+                box-sizing: border-box;
+                border-radius: calc(var(--control-corner-radius) * 1px);
+                border: 0.5px solid ${e.color};
+            }
+
+            @media (forced-colors: active) {
+                .ad-slug2-text::before {
+                    border: 0.5px solid buttontext;
+                    opacity: 1;
+                }
+        
+                .ad-slug2-text {
+                    color: buttontext;
+                    opacity: 1;
+                    background: buttonface;
+                }
+            }
+        `)));var u,g=a(39181),h=a(13988),m=a(16078),v=a(70188);!function(e){e.default="default",e.condensed="condensed",e.infoPane="infoPane",e.infoPane1x3y="infoPane1x3y",e.infoPaneSplitVertical="infoPaneSplitVertical",e.infoPaneSplitHorizontal="infoPaneSplitHorizontal"}(u||(u={}));const w=e=>e?m.Z.removeAdsComponents(e):"",y=g.d`
+    ${(0,h.g)((e=>e.type),g.d`
+        ${(0,h.g)((e=>"greyLabel"===e.type),g.d`
+            <div class="native-ad-label-dr-wrapper">
+                <a
+                    class="native-ad-label-dr grey ${e=>e.shouldAdjustGap?"gap":""}"
+                    href="${e=>e.privacyUrl}"
+                    target="_blank"
+                    title="${e=>e.nativeAdAdLabelText}"
+                    ${(0,v.X)((e=>e.telemetryMetadata))}
+                >
+                    ${e=>e.adLabelText}
+                    ${e=>w(e.id)}
+                </a>
+            </div>
+        `)}
+        ${(0,h.g)((e=>"greenLabel"===e.type),g.d`
+            <div class="native-ad-label-dr-wrapper">
+                <a 
+                    class="native-ad-label-dr green ${e=>e.shouldAdjustGap?"gap":""}" 
+                    href="${e=>e.privacyUrl}" 
+                    target="_blank"
+                    title="${e=>e.nativeAdAdLabelText}"
+                    ${(0,v.X)((e=>e.telemetryMetadata))}
+                >
+                    ${e=>e.adLabelText}
+                    ${e=>w(e.id)}
+                </a>
+            </div>
+        `)}
+        ${(0,h.g)((e=>"defaultLabel"===e.type),g.d`
+            <div class="native-ad-label-dr-wrapper">
+                <a 
+                    class="ad-slug2-text ${e=>e.isSeasonal?"is-seasonal-style":""} ${e=>e.shouldAdjustGap?"gap":""} ${e=>e.isFeedV2?"is-feed-v2-text":""}" 
+                    href="${e=>e.privacyUrl}"
+                    target="_blank"
+                    title="${e=>e.nativeAdAdLabelText}"
+                    ${(0,v.X)((e=>e.telemetryMetadata))}
+                >
+                    ${e=>e.adLabelText}
+                    ${e=>w(e.id)}
+                </a>
+            </div>
+        `)}
+        ${(0,h.g)((e=>"topSiteAdLabelBig"===e.type),g.d`
+        <div class="native-ad-label-dr-wrapper">
+            <a 
+                class="ad-label-topsite ad-label-big" 
+                href="${e=>e.privacyUrl}"
+                target="_blank"
+                title="${e=>e.nativeAdAdLabelText}"
+                ${(0,v.X)((e=>e.telemetryMetadata))}
+            >
+                ${e=>e.adLabelText}
+            </a>
+        </div>
+        `)}
+        ${(0,h.g)((e=>"topSiteAdLabelSmall"===e.type),g.d`
+        <div class="native-ad-label-dr-wrapper">
+            <a 
+                class="ad-label-topsite ad-label-small" 
+                href="${e=>e.privacyUrl}"
+                target="_blank"
+                title="${e=>e.nativeAdAdLabelText}"
+                ${(0,v.X)((e=>e.telemetryMetadata))}
+            >
+                ${e=>e.adLabelText}
+            </a>
+        </div>
+        `)}
+        ${(0,h.g)((e=>"topSiteAdTxtBig"===e.type),g.d`
+        <div class="native-ad-label-dr-wrapper">
+            <a 
+                class="ad-label-topsite ad-txt-big" 
+                href="${e=>e.privacyUrl}"
+                target="_blank"
+                title="${e=>e.nativeAdAdLabelText}"
+                ${(0,v.X)((e=>e.telemetryMetadata))}
+            >
+                ${e=>e.adLabelText}
+            </a>
+        </div>
+        `)}
+        ${(0,h.g)((e=>"topSiteAdTxtSmall"===e.type),g.d`
+        <div class="native-ad-label-dr-wrapper">
+            <a 
+                class="ad-label-topsite ad-txt-small" 
+                href="${e=>e.privacyUrl}"
+                target="_blank"
+                title="${e=>e.nativeAdAdLabelText}"
+                ${(0,v.X)((e=>e.telemetryMetadata))}
+            >
+                ${e=>e.adLabelText}
+            </a>
+        </div>
+        `)}
+    `)}
+`;let x=class extends d{};x=(0,n.gn)([(0,r.M)({name:"msn-native-ad-ad-label",template:y,styles:p})],x)},84446:function(e,t,a){a.d(t,{F:function(){return r}});var n=a(33940),i=a(89346),o=a(53046),s=a(87697),c=a(33764);const d=new Map([["flex","MsnFlexLayout"],["pixel","MsnPixelLayout"],["block","MsnBlockLayout"]]);class r extends i.H{constructor(){super(...arguments),this._displayName="MsnUberLayout"}connectedCallback(){var e;super.connectedCallback();const t=null===(e=this.layoutConfig)||void 0===e?void 0:e.mode;if(d.has(t)&&d.get(t)!==this._displayName)return;const a=Object.keys(this.layoutConfig||{}).filter((e=>"mode"!==e)).map((e=>{var t;return(0,c._t)(e,null===(t=this.layoutConfig)||void 0===t?void 0:t[e])})).filter((e=>""!==e));this.layoutStyle=o.i`${a.length>0?`:host {${a.join(";")}}`:""}`}}(0,n.gn)([s.LO],r.prototype,"layoutConfig",void 0),(0,n.gn)([s.LO],r.prototype,"layoutStyle",void 0)},84707:function(e,t,a){a.d(t,{n:function(){return i}});var n=a(72365);function i(e){e&&e.enableSuperCardsBundles?e.enableSuperCards19Bundles?(0,n.g)((()=>a.e("web-components_super-container_dist_register_CsFeed19Module_js").then(a.bind(a,42543)))):e.enableSuperCards20Bundles?(0,n.g)((()=>a.e("web-components_super-container_dist_register_CsFeed20Module_js").then(a.bind(a,12485)))):e.enableSuperCardsMobileBundles?(0,n.g)((()=>a.e("web-components_super-container_dist_register_CsFeedNoHoverModule_js").then(a.bind(a,24828)))):e.enableSuperCardsMsnMobileBundles?(0,n.g)((()=>a.e("web-components_super-container_dist_register_CsFeedNoSeeMoreModule_js").then(a.bind(a,29730)))):(0,n.g)((()=>a.e("web-components_super-container_dist_register_CsFeedModule_js").then(a.bind(a,6582)))):(0,n.g)((()=>a.e("web-components_super-container_dist_register_MsftFeedModule_js").then(a.bind(a,73593))))}},65302:function(e,t,a){a.d(t,{Z:function(){return w}});var n=a(33940),i=a(41751),o=a(28766),s=a(89346),c=a(57905),d=a(87697),r=a(65620);class l extends s.H{constructor(){super(...arguments),this.hasAction=!1,this.hideOverflowText=!1,this.focusBack=!0}connectedCallback(){var e;super.connectedCallback();let t=document.activeElement;for(;null===(e=null==t?void 0:t.shadowRoot)||void 0===e?void 0:e.activeElement;)t=t.shadowRoot.activeElement;this.lastActiveElement=t}disconnectedCallback(){super.disconnectedCallback(),this.focusBack&&this.lastActiveElement.focus()}handleActionAdded(){this.actions.assignedNodes().length>0?this.hasAction=!0:this.hasAction=!1}}(0,n.gn)([d.LO],l.prototype,"hasAction",void 0),(0,n.gn)([(0,r.Lj)({mode:"boolean"})],l.prototype,"hideOverflowText",void 0),(0,n.gn)([d.LO],l.prototype,"focusBack",void 0);var b=a(53046),f=a(15564),p=a(7642),u=a(67020);const g=b.i`
+    ${(0,u.j)("flex")} :host {
+        font-weight: 400;
+        font-size: ${f.cSu};
+        line-height: ${f.RUt};
+        --elevation: 4;
+    }
+
+    .toast-root {
+        width: fit-content;
+        max-width: var(--toast-max-width, 420px);
+        min-height: 48px;
+        height: fit-content;
+        border-radius: calc(${f.rSr} * 1px);
+        background: ${f.RJY};
+        box-sizing: border-box;
+        display: flex;
+        ${p.XC};
+    }
+
+    .text-overflow {
+        display: inline-block;
+        max-width: var(--toast-message-max-width, 200px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .content-container {
+        margin-inline-start: 16px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        min-width: 0;
+    }
+
+    .content-container span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .close-button {
+        margin: 8px;
+    }
+
+    .with-action {
+        margin-inline-end: 13px;
+    }
+`;var h=a(39181),m=a(58952);const v=h.d`
+    <div class="toast-root" part="toast-root" tabindex="0">
+        <div class="content-container">
+            <span class="${e=>e.hasAction?"with-action":""} ${e=>e.hideOverflowText?"text-overflow":""}"><slot></slot></span>
+            <span><slot name="actions" ${(0,m.i)("actions")} @slotchange=${e=>e.handleActionAdded()}></slot></span>
+        </div>
+        <div class="close-button">
+            <slot name="close-button"></slot>
+        </div>
+    </div>
+`;let w=class extends l{};w=(0,n.gn)([(0,s.M)({name:"msn-toast",template:v,styles:g,shadowOptions:{delegatesFocus:!0}})],w),(0,i.z)().withShadowRootMode("closed").withElementDisambiguation((()=>c.h.ignoreDuplicate)).register((0,o.hb)())},1714:function(e,t,a){a.d(t,{X:function(){return k}});var n=a(33940),i=a(89346),o=a(12968),s=a(65620),c=a(87697);class d extends i.H{saveTopSite(){this.$emit("save",this.newOrUpdatedTopSite),this.resetInputs()}closeTopSiteDialog(){this.$emit("close"),this.resetInputs()}closeButtonHandler(e){var t,a;let n;const i=(null===(t=this.shadowRoot)||void 0===t?void 0:t.host)&&this.shadowRoot.host.id,s=(null===(a=this.shadowRoot)||void 0===a?void 0:a.activeElement)&&this.shadowRoot.activeElement.id;"Enter"===e.key||" "===e.key?this.closeTopSiteDialog():"Tab"===e.key?"closeButton"===s&&(n=e.shiftKey?"topSiteAddDialog"===i&&void 0!==this.shadowRoot.querySelector("suggestion-title")?this.shadowRoot.querySelector("suggestion-body")[-1]:this.shadowRoot.getElementById("Cancel"):this.shadowRoot.getElementById("nameInputControl")):"Shift"===e.key&&e.preventDefault(),n&&(e.preventDefault(),o.SO.queueUpdate((()=>n.focus())))}nameInputKeyHandler(e){var t,a;let n;const i=(null===(t=this.shadowRoot)||void 0===t?void 0:t.host)&&this.shadowRoot.host.id,s=(null===(a=this.shadowRoot)||void 0===a?void 0:a.activeElement)&&this.shadowRoot.activeElement.id;"Tab"===e.key?"nameInputControl"===s&&(e.shiftKey?n=this.shadowRoot.getElementById("closeButton"):"topSiteAddDialog"===i?n=this.shadowRoot.getElementById("urlInputControl"):"topSiteEditDialog"===i&&(n=this.shadowRoot.getElementById("Save"))):"Shift"===e.key&&e.preventDefault(),n&&(e.preventDefault(),o.SO.queueUpdate((()=>n.focus())))}handleNameChange(){this.nameInputControl&&this.nameInputControl.value&&(this.newOrUpdatedTopSite.name=this.nameInputControl.value)}handleUrlChange(){this.urlInputControl&&this.urlInputControl.value&&(this.newOrUpdatedTopSite.url=this.urlInputControl.value)}resetInputs(){this.urlInputControl&&(this.urlInputControl.value=""),this.nameInputControl&&(this.nameInputControl.value="")}}(0,n.gn)([s.Lj],d.prototype,"headerTitle",void 0),(0,n.gn)([s.Lj],d.prototype,"saveText",void 0),(0,n.gn)([s.Lj],d.prototype,"cancelText",void 0),(0,n.gn)([s.Lj],d.prototype,"closeText",void 0),(0,n.gn)([s.Lj],d.prototype,"addDialogSubHeading",void 0),(0,n.gn)([c.LO],d.prototype,"saveButtonTelemetryTag",void 0),(0,n.gn)([c.LO],d.prototype,"cancelButtonTelemetryTag",void 0),(0,n.gn)([c.LO],d.prototype,"closeButtonTelemetryTag",void 0),(0,n.gn)([c.LO],d.prototype,"nameInputData",void 0),(0,n.gn)([c.LO],d.prototype,"urlInputData",void 0),(0,n.gn)([c.LO],d.prototype,"newOrUpdatedTopSite",void 0);var r=a(15564),l=a(70783),b=a(53046);const f=b.i`
+    .close-button {
+        left: auto;
+        right: 16px;
+    }
+`,p=b.i`
+    .close-button {
+        left: 16px;
+        right: auto;
+    }
+`,u=b.i`
+    :host {
+        --control-corner-radius: 2;
+        --dialog-z-index: 0;
+        --layer-corner-radius: 4;
+        position: relative;
+    }
+
+    h1 {
+        cursor: default;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        margin-top: 0;
+        margin-bottom: 0;
+        color: ${r.CHi};
+    }
+
+    .dialog {
+        --dialog-height: var(--top-site-dialog-height, auto);
+        --dialog-width: var(--top-site-dialog-width, auto);
+        position: absolute;
+        z-index: var(--top-site-dialog-z-index);
+        top: var(--dialog-top, auto);
+        bottom: var(--dialog-bottom, auto);
+        left: var(--dialog-left, auto);
+        right: var(--dialog-right, auto);
+    }
+
+    .main-container {
+        padding: 12px 16px;
+        display: grid;
+        background-color: ${r.s55};
+    }
+
+    .header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        position: relative;
+        width: 100%;
+    }
+
+    .close-button {
+        position: absolute;
+        min-width: 24px;
+        height: 24px;
+    }
+
+    .close-button::part(control) {
+        padding: 0;
+        margin: 0;
+    }
+
+    .close-button svg {
+        width: 10px;
+        height: 10px;
+    }
+
+    .body {
+        margin-top: 4px;
+        flex: 1 1 0;
+        font-size: 12px;
+        display: inline-flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 12px;
+        color: ${r.CHi};
+        justify-content: space-between;
+    }
+
+    .input-container {
+        display: grid;
+        line-height: 16px;
+    }
+
+    fluent-text-field::part(label) {
+        line-height: 32px;
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 40px;
+        text-align: start;
+    }
+
+    fluent-text-field::part(control) {
+        margin: 0;
+        transition: all 0.2s ease-in-out;
+        line-height: 20px;
+        font-weight: 400;
+        padding: 0 11px;
+        border-radius: 2px;
+        height: 32px;
+    }
+
+    .footer-actions {
+        justify-content: center;
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: var(--top-site-dialog-button-width, 140px) var(--top-site-dialog-button-width, 140px);
+        grid-gap: 8px;
+        width: 100%;
+        margin-top: 24px;
+    }
+
+    fluent-dialog::part(positioning-region) {
+        position: var(--dialog-position, relative);
+    }
+`.withBehaviors(new l.O(f,p));var g=a(39181),h=a(13988),m=a(58952),v=a(70188);const w=g.d`
+    <fluent-dialog @dismiss=${e=>e.closeTopSiteDialog()} class="dialog" part="dialog">
+        <div class="main-container">
+            <div class="header">
+                <h1 class="header-title">${e=>e.headerTitle}</h1>
+            </div>
+            <div class="body" part="main-container-body">
+            ${(0,h.g)((e=>e.nameInputData),g.d`
+                <div class="input-container">
+                    <fluent-text-field
+                        autofocus
+                        appearance="fill"
+                        tabindex="0"
+                        type="${e=>e.nameInputData.type||"text"}"
+                        id="${e=>e.nameInputData.id}"
+                        aria-label="${e=>e.nameInputData.ariaLabel}"
+                        value="${e=>e.nameInputData.value}"
+                        @input=${(e,t)=>e.handleNameChange()}
+                        ${(0,m.i)("nameInputControl")}
+                    >   
+                        ${e=>e.nameInputData.name}
+                    </fluent-text-field>
+                </div>`)}
+            ${(0,h.g)((e=>e.urlInputData),g.d`
+                <div class="input-container">
+                    <fluent-text-field
+                        tabindex="0"
+                        type="${e=>e.nameInputData.type||"url"}"
+                        id="${e=>e.urlInputData.id}"
+                        aria-label="${e=>e.urlInputData.ariaLabel}"
+                        value="${e=>e.urlInputData.value}"
+                        @input=${e=>e.handleUrlChange()}
+                        ${(0,m.i)("urlInputControl")}
+                    >
+                        ${e=>e.urlInputData.name}
+                    </fluent-text-field>
+                </div>`)}
+            </div>
+            <div class="footer-actions" part="main-container-footer-actions">
+                <fluent-button 
+                    appearance="neutral"
+                    tabindex="0"
+                    title=${e=>e.saveText}
+                    id=${e=>e.saveText}
+                    aria-label=${e=>e.saveText}
+                    role="button"
+                    @click=${e=>e.saveTopSite&&e.saveTopSite()}
+                    @keypress=${e=>e.saveTopSite&&e.saveTopSite()}
+                    ${(0,v.X)((e=>e.saveButtonTelemetryTag))}
+                >
+                    ${e=>e.saveText}
+                </fluent-button>
+                <fluent-button
+                    appearance="neutral"
+                    tabindex="0"            
+                    title=${e=>e.cancelText}
+                    id=${e=>e.cancelText}
+                    aria-label=${e=>e.cancelText}
+                    role="button"
+                    @click=${e=>e.closeTopSiteDialog&&e.closeTopSiteDialog()}
+                    @keypress=${e=>e.closeTopSiteDialog&&e.closeTopSiteDialog()}
+                    ${(0,v.X)((e=>e.cancelButtonTelemetryTag))}
+                >
+                    ${e=>e.cancelText}
+                </fluent-button>
+            </div>
+            <slot
+                name="subSection"
+                ${(0,m.i)("subSection")}
+            >
+            </slot>
+            <fluent-button
+                id="closeButton"
+                appearance="stealth"
+                class="close-button"
+                title=${e=>e.closeText}
+                aria-label=${e=>e.closeText}
+                role="button"
+                @click=${e=>e.closeTopSiteDialog&&e.closeTopSiteDialog()}
+                @keydown=${(e,t)=>e.closeButtonHandler(t.event)}
+                ${(0,v.X)((e=>e.closeButtonTelemetryTag))}
+            >
+                <svg viewBox="0 0 16 16" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg"><path d="M14.1016 1.60156L8.20312 7.5L14.1016 13.3984L13.3984 14.1016L7.5 8.20312L1.60156 14.1016L0.898438 13.3984L6.79688 7.5L0.898438 1.60156L1.60156 0.898438L7.5 6.79688L13.3984 0.898438L14.1016 1.60156Z"></path></svg>
+            </fluent-button>
+        </div>
+    </fluent-dialog>
+`;var y=a(41751),x=a(28766),C=a(3834),S=a(78432),_=a(57905);let k=class extends d{};k=(0,n.gn)([(0,i.M)({name:"msn-top-site-dialog",template:w,styles:u,shadowOptions:{delegatesFocus:!0}})],k),(0,y.z)().withShadowRootMode("closed").withElementDisambiguation((()=>_.h.ignoreDuplicate)).register((0,x.hb)(),(0,C.i0)()),(0,y.z)().withShadowRootMode("open").withElementDisambiguation((()=>_.h.ignoreDuplicate)).register((0,S.Ad)())},66341:function(e,t,a){a.d(t,{v:function(){return x}});var n=a(33940),i=a(41751),o=a(28766),s=a(89346),c=a(57905),d=a(65620),r=a(9533),l=a(81555);class b extends s.H{handleIconActionContentChange(){this.iconActionContainer.classList.toggle("icon-action",this.iconAction.assignedNodes().length>0)}connectedCallback(){super.connectedCallback();const e=this.shadowRoot.getElementById("topSitePlaceHolder");(0,r.FY)(l._.topSitePlaceHolder,e)}}(0,n.gn)([(0,d.Lj)({mode:"boolean"})],b.prototype,"addTileSupported",void 0),(0,n.gn)([(0,d.Lj)({mode:"boolean"})],b.prototype,"seeAllTileEnabled",void 0),(0,n.gn)([(0,d.Lj)({mode:"boolean"})],b.prototype,"backPlateEnabled",void 0);var f=a(15564),p=a(53046),u=a(67020);const g=p.i`
+    ${(0,u.j)("inline-block")} :host {
+        box-sizing: border-box;
+        border-radius: 4px;
+        position: relative;
+        justify-content: center;
+        height: 80px;
+        width: 104px;
+        height: var(--top-site-height, 80px);
+        width: var(--top-site-width, 104px);
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .back-plate-container {
+        background: var(--top-site-placeholder-backplate-fill, ${f.s55});
+        border-radius: 4px;
+        width: var(--top-site-black-plate-width, 44px);
+        height: var(--top-site-black-plate-height, 44px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px auto;
+    }
+
+    :host(:hover) {
+        background: var(--top-site-fill-hover, ${f.XiB});
+    }
+
+    .icon-action {
+        align-items: center;
+        display: flex;
+        height: 100%;
+        width: 100%;
+    }
+
+    ::slotted([slot="icon-action"]) {
+        width: 100%;
+        height: 100%;
+    }
+`;var h=a(39181),m=a(58952),v=a(13988);const w=h.d`
+    <div class="${e=>e.backPlateEnabled?"back-plate-container":"container"}" id="topSitePlaceHolder">
+        <span part="icon-action" ${(0,m.i)("iconActionContainer")}>
+            <slot
+                name="icon-action"
+                ${(0,m.i)("iconAction")}
+                @slotchange=${e=>e.handleIconActionContentChange()}
+            >
+            </slot>
+        </span>
+    </div>
+`,y=h.d`
+    <template>
+        ${(0,v.g)((e=>e.addTileSupported||e.seeAllTileEnabled),w)}
+    </template>
+`;let x=class extends b{};x=(0,n.gn)([(0,s.M)({name:"msft-top-site-placeholder",template:y,styles:g})],x),(0,i.z)().withShadowRootMode("closed").withElementDisambiguation((()=>c.h.ignoreDuplicate)).register((0,o.hb)())},6726:function(e,t,a){a.d(t,{O:function(){return x}});var n=a(33940),i=a(89346),o=a(65620),s=a(87697),c=a(86076),d=a(51208);class r extends i.H{constructor(){super(...arguments),this.imagepartname="image"}handleImageContentChange(){"large"==this.tileSize?this.imageContainer.classList.toggle("image-large",this.image.assignedNodes().length>0):"medium"==this.tileSize?this.imageContainer.classList.toggle("image-medium",this.image.assignedNodes().length>0):this.imageContainer.classList.toggle("image",this.image.assignedNodes().length>0)}}(0,n.gn)([o.Lj],r.prototype,"download",void 0),(0,n.gn)([s.LO],r.prototype,"href",void 0),(0,n.gn)([o.Lj],r.prototype,"hreflang",void 0),(0,n.gn)([o.Lj],r.prototype,"ping",void 0),(0,n.gn)([o.Lj],r.prototype,"referrerpolicy",void 0),(0,n.gn)([o.Lj],r.prototype,"rel",void 0),(0,n.gn)([o.Lj],r.prototype,"target",void 0),(0,n.gn)([o.Lj],r.prototype,"type",void 0),(0,n.gn)([o.Lj],r.prototype,"imagepartname",void 0),(0,n.gn)([s.LO],r.prototype,"anchorTelemetryTag",void 0),(0,n.gn)([o.Lj],r.prototype,"tileSize",void 0),(0,n.gn)([o.Lj],r.prototype,"pinned",void 0),(0,n.gn)([o.Lj],r.prototype,"enableIndicator",void 0),(0,c.e)(r,d.hW);var l=a(15564),b=a(70783),f=a(53046);const p=f.i`
+    .start {
+        left: var(--top-site-margin, 9px);
+    }
+
+    .end {
+        right: var(--top-site-margin, 9px);
+    }
+`,u=f.i`
+    .start {
+        right: var(--top-site-margin, 9px);
+    }
+
+    .end {
+        left: var(--top-site-margin, 9px);
+    }
+`,g=f.i`
+    :host {
+        background-color: transparent;
+        border-radius: 4px;
+        box-shadow: none;
+        display: flex;
+        height: var(--top-site-height, 84px);
+        justify-content: center;
+        width: var(--top-site-width, 108px);
+        position: relative;
+        border: calc(${l.Han} * 1px) solid transparent;
+    }
+
+    :host(:hover) {
+        background: var(--top-site-fill-hover, ${l.XiB});
+    }
+
+    :host(:focus) {
+        outline: none;
+        border-color: ${l.yGg};
+    }
+
+    .control:focus {
+        outline: none;
+        border: none;
+    }
+
+    .start,
+    .end {
+        position: absolute;
+        top: var(--top-site-margin, 9px);
+        z-index: 2;
+        opacity: 0;
+    }
+
+    :host(.pinned-top-site) .start {
+        pointer-events: none;
+    }
+
+    :host(:active) .start,
+    :host(:active) .end,
+    :host(:focus) .start,
+    :host(:focus) .end,
+    :host(:hover) .start,
+    :host(:hover) .end,
+    :host(:hover) fluent-button,
+    .start:active,
+    .end:active,
+    .start:focus-within,
+    .end:focus-within {
+        background: transparent;
+        opacity: 1;
+        outline: none;
+    }
+
+    .content-container {
+        transition: all 0.2s ease-in-out;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        height: 100%;
+        padding: 10px 12px;
+        border-radius: 4px;
+    }
+
+    .content-container-large-tile {
+        transition: all 0.2s ease-in-out 0s;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        padding: 0px;
+    }
+
+    .image {
+        align-items: center;
+        box-sizing: border-box;
+        width: var(--top-site-black-plate-width, 44px);
+        height: var(--top-site-black-plate-height, 44px);
+        justify-content: center;
+        display: flex;
+    }
+
+    .image-medium {
+        align-items: center;
+        box-sizing: border-box;
+        width: var(--top-site-black-plate-width, 58px);
+        height: var(--top-site-black-plate-height, 58px);
+        justify-content: center;
+        display: flex;
+    }
+
+    .image-large {
+        align-items: center;
+        box-sizing: border-box;
+        width: var(--top-site-black-plate-width, 100.35px);
+        height: var(--top-site-black-plate-height, 72.9px);
+        justify-content: center;
+        display: flex;
+    }
+
+    .image ::slotted(img) {
+        margin: 0 auto;
+        max-width: 24px;
+        height: 24px;
+    }
+
+    .image-medium ::slotted(img) {
+        margin: 0px auto;
+        max-width: 30px;
+        height: 30px;
+    }
+
+    .image-large ::slotted(img) {
+        margin: 12px auto auto;
+        max-width: 30px;
+        height: 30px;
+    }
+
+    .title-container {
+        display: flex;
+        justify-content: center;
+        margin: 4px 0 0 0;
+        width: 100%;
+    }
+
+    .title-container-large-tile {
+        display: flex;
+        justify-content: center;
+        width: 86px;
+        text-overflow: ellipsis;
+        position: absolute;
+        top: 49px;
+        z-index: 0;
+        margin: 0px;
+    }
+
+    .control {
+        box-sizing: content-box;
+        color: var(--top-site-color, ${l.CHi});
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        max-height: 18px;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 0;
+        text-overflow: ellipsis;
+        text-decoration: none;
+    }
+
+    .control-large {
+        box-sizing: content-box;
+        color: var(--top-site-color, ${l.CHi});
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        max-height: 16px;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 0;
+        text-overflow: ellipsis;
+        text-decoration: none;
+    }
+
+    .control:after {
+        bottom: 0;
+        content: "";
+        height: 100%;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .control-large:after {
+        inset: -49px -7.175px;
+        content: "";
+        height: 455.625%;
+        position: absolute;
+        width: 116.686%;
+        z-index: 1;
+    }
+
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: grid;
+        gap: 5px;
+        align-items: center;
+        grid-auto-flow: column;
+    }
+
+    .pinned-indicator {   
+        height: 12px;
+        width: 12px;
+        align-self: center;
+        display: flex;
+    }
+
+    .pinned-indicator::slotted(svg) {
+        width: 12px;
+        height: 12px;
+    }
+
+    ::slotted([slot="pinned-icon"]) {
+        width: 12px;
+        height: 12px;
+    }
+`.withBehaviors(new b.O(p,u));var h=a(39181),m=a(58952),v=a(13988),w=a(70188);const y=h.d`
+    <template>
+        ${d.hX}
+        <div class="${e=>"large"===e.tileSize?"content-container-large-tile":"content-container"}">
+            <div class="image-container">
+                <div part="${e=>{var t;return null!==(t=e.imagepartname)&&void 0!==t?t:"image"}}" ${(0,m.i)("imageContainer")}>
+                    <slot
+                        name="image"
+                        ${(0,m.i)("image")}
+                        @slotchange=${e=>e.handleImageContentChange()}
+                    >
+                    </slot>
+                </div>
+            </div>
+            <div class="${e=>"large"===e.tileSize?"title-container-large-tile":"title-container"}">
+                ${(0,v.g)((e=>"1"===e.pinned&&"1"===e.enableIndicator),h.d`
+                    <div style="display: flex; width: 0px; flex-direction: row-reverse; margin-inline-end: 2px;">
+                        <span part="pinned-indicator" class="pinned-indicator">
+                            <slot name="pinned-icon"></slot>
+                        </span>
+                    </div>`)}
+                <a
+                    class="${e=>"large"===e.tileSize?"control-large":"control"}"
+                    part="${e=>"large"===e.tileSize?"control-large":"control"}"
+                    download="${e=>e.download}"
+                    href="${e=>e.href}"
+                    hreflang="${e=>e.hreflang}"
+                    ping="${e=>e.ping}"
+                    referrerpolicy="${e=>e.referrerpolicy}"
+                    rel="${e=>e.rel}"
+                    target="${e=>e.target}"
+                    type="${e=>e.type}"
+                    ${(0,w.X)((e=>e.anchorTelemetryTag))}
+                >
+                    <span class="content" part="content">
+                        <slot></slot>
+                    </span>
+                </a>
+            </div>
+        </div>
+        ${d.zq}
+    </template>
+`;let x=class extends r{};x=(0,n.gn)([(0,i.M)({name:"msft-top-site",template:y,styles:g,shadowOptions:{delegatesFocus:!0}})],x)},95640:function(e,t,a){var n=a(33940),i=a(53076),o=a(83227),s=a(8158);const{registerExperience:c}=s.n;c(i.z.TelemetryData,(()=>Promise.resolve().then(a.bind(a,72467)))),c(i.z.TelemetryDataEdgeChromium,(()=>Promise.resolve().then(a.bind(a,86088)))),c(i.z.IrisData,(()=>Promise.resolve().then(a.bind(a,22528)))),c(i.z.ExperienceTrackerEdgeNextData,(()=>Promise.resolve().then(a.bind(a,72358)))),c(i.z.ChromiumPageSettings,(()=>Promise.resolve().then(a.bind(a,75207)))),c(i.z.SmartListSharedData,(()=>Promise.resolve().then(a.bind(a,12360)))),c(i.z.BackgroundData,(()=>Promise.resolve().then(a.bind(a,66243)))),c(i.z.MsccCookieBannerData,(()=>a.e("msccCookieBanner").then(a.bind(a,59241)))),c(i.z.OneTrustCookieConsentData,(()=>a.e("oneTrustCookieConsentData").then(a.bind(a,78038)))),c(i.z.TopicData,(()=>a.e("topicData").then(a.bind(a,96060)))),c(i.z.PoweredByData,(()=>a.e("poweredByData").then(a.bind(a,91156)))),c(i.z.CategoryData,(()=>a.e("category-data-connector").then(a.bind(a,51858)))),c(i.z.LayoutPreferenceData,(()=>a.e("layoutPreferenceData").then(a.bind(a,4504)))),c(i.z.WeatherData,(()=>a.e("weather-data-connector").then(a.bind(a,9805)))),c(i.z.CoachmarkData,(()=>a.e("CoachmarkData").then(a.bind(a,64623)))),c(i.z.RewardsData,(()=>a.e("RewardsData").then(a.bind(a,9903)))),c(i.z.ExperienceLoadedData,(()=>a.e("ExperienceLoadedData").then(a.bind(a,70299)))),c(i.z.DefaultBrowserReclaimData,(()=>a.e("DefaultBrowserReclaimData").then(a.bind(a,33257)))),c(i.z.RewardsCoachmarkData,(()=>a.e("RewardsCoachmarkData").then(a.bind(a,24471)))),c(i.z.SignInData,(()=>a.e("SignInData").then(a.bind(a,42491)))),c(i.z.FeedNavHeaderData,(()=>a.e("FeedNavHeaderData").then(a.bind(a,85114)))),c(i.z.SocialData,(()=>a.e("social-data-connector").then(a.bind(a,59336)))),c(o.x.edgeChromiumPageWC,(()=>Promise.resolve().then(a.bind(a,40184)))),c(o.x.searchBoxEdgeNextWC,(()=>Promise.resolve().then(a.bind(a,6117)))),c(o.x.topSitesEdgeNextWC,(()=>Promise.resolve().then(a.bind(a,68349)))),c(o.x.backgroundImageWC,(()=>Promise.resolve().then(a.bind(a,20220)))),c(o.x.museumCard,(()=>Promise.resolve().then(a.bind(a,60325)))),c(i.z.AdminPortalData,(()=>a.e("office-feed").then(a.bind(a,80914)))),c(i.z.OfficeSharedData,(()=>a.e("office-feed").then(a.bind(a,64599)))),c(i.z.ShellNewTabData,(()=>a.e("office-feed").then(a.bind(a,19429)))),c(o.x.industryNewsCard,(()=>a.e("office-feed").then(a.bind(a,84116)))),c(o.x.nudgeSpotlightCard,(()=>a.e("office-feed").then(a.bind(a,38845)))),c(o.x.officeDocumentsTableWC,(()=>a.e("office-feed").then(a.bind(a,18426)))),c(o.x.todoCardWC,(()=>a.e("office-feed").then(a.bind(a,73883)))),c(o.x.recommendedCardFeed,(()=>a.e("office-feed").then(a.bind(a,94613)))),c(o.x.productivityHub,(()=>a.e("office-feed").then(a.bind(a,81060)))),c(o.x.denseCard,(()=>a.e("office-feed").then(a.bind(a,19283)))),c(o.x.summaryCardWC,(()=>a.e("office-feed").then(a.bind(a,80235)))),c(o.x.frequentSitesCardWC,(()=>a.e("office-feed").then(a.bind(a,21781)))),c(o.x.calendarCard,(()=>a.e("office-feed").then(a.bind(a,42604)))),c(o.x.articleFre,(()=>a.e("articleFre").then(a.bind(a,16865)))),c(o.x.articleRelatedStories,(()=>a.e("articleRelatedStories").then(a.bind(a,49586)))),c(o.x.articleTopComment,(()=>a.e("articleTopComment").then(a.bind(a,2318)))),c(o.x.autosCarousel,(()=>a.e("autos-carousel").then(a.bind(a,7573)))),c(o.x.autosMarketplaceCard,(()=>a.e("autosMarketplaceCard").then(a.bind(a,2588)))),c(o.x.bingHealth,(()=>a.e("bingHealth").then(a.bind(a,26221)))),c(o.x.bingHealthCard,(()=>a.e("bingHealthCard").then(a.bind(a,77e3)))),c(o.x.healthFitnessCarousel,(()=>a.e("healthFitnessCarousel").then(a.bind(a,92136)))),c(o.x.breakingNewsWC,(()=>a.e("breakingNewsWC").then(a.bind(a,65562)))),c(o.x.cardActionWC,(()=>a.e("card-actions-wc").then(a.bind(a,46684)))),c(o.x.casualGamesCard,(()=>a.e("casual-games-card").then(a.bind(a,26330)))),c(o.x.holidayEffects,(()=>a.e("holiday-effects").then(a.bind(a,42815)))),c(o.x.coachmarkWC,(()=>a.e("coachmark-wc").then(a.bind(a,59731)))),c(o.x.coldStartWC,(()=>a.e("cold-start-wc").then(a.bind(a,34872)))),c(o.x.conditionalBannerWC,(()=>a.e("conditionalBannerWC").then(a.bind(a,82377)))),c(o.x.promoBannerWC,(()=>a.e("promoBannerWC").then(a.bind(a,20343)))),c(o.x.contentGroupCard,(()=>Promise.all([a.e("weather-data-connector"),a.e("content-group-card")]).then(a.bind(a,19475)))),c(o.x.dailyBriefWC,(()=>a.e("daily-brief-wc").then(a.bind(a,74580)))),c(o.x.xboxFeedWC,(()=>a.e("xbox-feed-wc").then(a.bind(a,51384)))),c(o.x.defaultBrowserReclaimBanner,(()=>a.e("default-browser-reclaim-banner").then(a.bind(a,99527)))),c(o.x.devTools,(()=>a.e("dev-tools").then(a.bind(a,47269)))),c(o.x.edgeShopping,(()=>a.e("edge-shopping").then(a.bind(a,66717)))),c(o.x.esportsCard,(()=>a.e("esports-card").then(a.bind(a,98654)))),c(o.x.linkedInCard,(()=>a.e("linked-in-card").then(a.bind(a,44209)))),c(o.x.esportsStreamsCard,(()=>a.e("esports-streams-card").then(a.bind(a,11850)))),c(o.x.feedbackLinkWC,(()=>a.e("feedback").then(a.bind(a,36474)))),c(o.x.feedbackDialogWC,(()=>a.e("feedback-dialog").then(a.bind(a,15834)))),c(o.x.feedNavigationHeader,(()=>a.e("feed-navigation-header").then(a.bind(a,63419)))),c(o.x.healthTipWC,(()=>a.e("health-tip-wc").then(a.bind(a,79768)))),c(o.x.horizontalNav,(()=>a.e("horizontal-nav").then(a.bind(a,61920)))),c(o.x.feedToggleWC,(()=>a.e("feed-toggle-wc").then(a.bind(a,72098)))),c(o.x.gameCard,(()=>a.e("game-card").then(a.bind(a,33720)))),c(o.x.gamingCompeteCard,(()=>a.e("gaming-compete-card").then(a.bind(a,22114)))),c(o.x.gamingMatchCard,(()=>a.e("gaming-match-card").then(a.bind(a,85084)))),c(o.x.gamingPersonalizationCard,(()=>a.e("gaming-personalization-card").then(a.bind(a,60866)))),c(o.x.gamingRecentlyPlayedCard,(()=>a.e("gaming-recentlyplayed-card").then(a.bind(a,47799)))),c(o.x.gamingRecommendedCard,(()=>a.e("gaming-recommended-card").then(a.bind(a,29844)))),c(o.x.gamingRedditCard,(()=>a.e("gaming-reddit-card").then(a.bind(a,74119)))),c(o.x.gamingRewardsCard,(()=>a.e("gaming-rewards-card").then(a.bind(a,81850)))),c(o.x.gamingStreamCard,(()=>a.e("gaming-stream-card").then(a.bind(a,27446)))),c(o.x.gamingTournamentCard,(()=>a.e("gaming-tournament-card").then(a.bind(a,99239)))),c(o.x.gamingUpcomingCard,(()=>a.e("gaming-upcoming-card").then(a.bind(a,84018)))),c(o.x.gamingVideoCard,(()=>a.e("gaming-video-card").then(a.bind(a,90487)))),c(o.x.generalElections,(()=>a.e("general-elections").then(a.bind(a,40742)))),c(o.x.gridViewFeed,(()=>Promise.all([a.e("libs_feed-layout-common_dist_CommonTemplates_js-libs_super-feed_dist_utils_TtvrUtils_js-node_-0e1ec0"),a.e("grid-view-feed")]).then(a.bind(a,68066)))),c(o.x.groceryCouponSdCard,(()=>Promise.all([a.e("libs_icons-wc_icons_CardActionFluentButton_svg-libs_icons-wc_icons_HideV2_svg-libs_icons-wc_i-46086e"),a.e("grocery-coupon-sd-card")]).then(a.bind(a,31135)))),c(o.x.horoscopeAnswerCardWC,(()=>a.e("horoscope-answer-card-wc").then(a.bind(a,84659)))),c(o.x.imageSearchWC,(()=>a.e("image-search-wc").then(a.bind(a,90686)))),c(o.x.interestsWC,(()=>a.e("interests-wc").then(a.bind(a,9790)))),c(o.x.layoutToggle,(()=>a.e("layout-toggle").then(a.bind(a,7526)))),c(o.x.linearViewFeed,(()=>Promise.all([a.e("libs_feed-layout-common_dist_CommonTemplates_js-libs_super-feed_dist_utils_TtvrUtils_js-node_-0e1ec0"),a.e("linear-view-feed")]).then(a.bind(a,92249)))),c(o.x.locationMarker,(()=>a.e("locationMarker").then(a.bind(a,23567)))),c(o.x.lottery,(()=>a.e("lottery-card").then(a.bind(a,82835)))),c(o.x.marketplaceCardWC,(()=>a.e("marketplace-card-wc").then(a.bind(a,82626)))),c(o.x.microsoftFeedCard,(()=>a.e("office-feed").then(a.bind(a,6247)))),c(o.x.mobileAppUpsell,(()=>a.e("mobile-app-upsell").then(a.bind(a,50159)))),c(o.x.mobileAppUpsellFloatingBtn,(()=>a.e("mobile-app-upsell-floating-btn").then(a.bind(a,99366)))),c(o.x.moneyInfoCardWC,(()=>Promise.all([a.e("libs_finance-service-library_dist_redux_FinanceData_connector_js"),a.e("money-info-card-wc")]).then(a.bind(a,11970)))),c(o.x.msRewardsWC,(()=>a.e("ms-rewards-wc").then(a.bind(a,69651)))),c(o.x.newsbarToggle,(()=>a.e("newsbar-toggle").then(a.bind(a,81071)))),c(o.x.newsSegmentCarousel,(()=>a.e("news-segment-carousel").then(a.bind(a,81878)))),c(o.x.notificationBellWC,(()=>a.e("notification-bell-wc").then(a.bind(a,36897)))),c(o.x.officeCoachmark,(()=>a.e("office-coachmark").then(a.bind(a,72960)))),c(o.x.officeLeftRail,(()=>a.e("office-leftrail").then(a.bind(a,88925)))),c(o.x.outlookEmailPreview,(()=>a.e("outlook-email-preview-wc").then(a.bind(a,39383)))),c(o.x.onThisDayCardWC,(()=>a.e("on-this-day-card-wc").then(a.bind(a,70346)))),c(o.x.onThisDayCardSmall,(()=>a.e("on-this-day-card-small").then(a.bind(a,39344)))),c(o.x.overlayWC,(()=>a.e("overlay-wc").then(a.bind(a,87247)))),c(o.x.personalizeNavButton,(()=>a.e("personalize-nav-button").then(a.bind(a,96201)))),c(o.x.pivotsNavEdgeNext,(()=>a.e("pivots-nav-edgenext").then(a.bind(a,20039)))),c(o.x.pivotContentWC,(()=>Promise.all([a.e("libs_finance-service-library_dist_redux_FinanceData_connector_js"),a.e("libs_feed-layout-common_dist_CommonTemplates_js-libs_super-feed_dist_utils_TtvrUtils_js-node_-0e1ec0"),a.e("pivot-content-wc")]).then(a.bind(a,83431)))),c(o.x.pollsCardWC,(()=>a.e("polls-card-wc").then(a.bind(a,82998)))),c(o.x.poweredByLegendWC,(()=>a.e("poweredby-legend-wc").then(a.bind(a,20382)))),c(o.x.prismSdCard,(()=>a.e("prism-sd-card").then(a.bind(a,7600)))),c(o.x.publisherCarousel,(()=>a.e("publisher-carousel").then(a.bind(a,44553)))),c(o.x.qna,(()=>a.e("qna-card").then(a.bind(a,24095)))),c(o.x.quizCard,(()=>a.e("quiz-card").then(a.bind(a,60476)))),c(o.x.reactionBreakdownDialog,(()=>a.e("reaction-breakdown-dialog").then(a.bind(a,62285)))),c(o.x.recipesSdCard,(()=>a.e("recipes-sd-card").then(a.bind(a,85698)))),c(o.x.recommendedInterests,(()=>a.e("recommended-interests").then(a.bind(a,10851)))),c(o.x.recommendedSearchCarouselWC,(()=>a.e("recommended-search-carousel-wc").then(a.bind(a,38535)))),c(o.x.recommendedSitesWC,(()=>a.e("recommendedSites-wc").then(a.bind(a,30493)))),c(o.x.recommendedSearchesCard,(()=>a.e("recommended-searches-card").then(a.bind(a,86160)))),c(o.x.rewardsCardWC,(()=>a.e("rewards-card-wc").then(a.bind(a,981)))),c(o.x.rewardsDailySetCard,(()=>a.e("rewards-daily-set-card").then(a.bind(a,2714)))),c(o.x.sdCardMaskWC,(()=>a.e("sd-card-mask-wc").then(a.bind(a,96965)))),c(o.x.searchHistoryEdgeNextWC,(()=>a.e("search-history-edgenext-wc").then(a.bind(a,83334)))),c(o.x.selectCarousel,(()=>a.e("select-carousel").then(a.bind(a,89778)))),c(o.x.settingsDialogEdgeNextWC,(()=>a.e("settings-dialog-edgenext-wc").then(a.bind(a,66546)))),c(o.x.sharedLinks,(()=>a.e("shared-links").then(a.bind(a,27953)))),c(o.x.sharepointNewsCard,(()=>a.e("sharepoint-news-card").then(a.bind(a,58965)))),c(o.x.shoppingCardWC,(()=>Promise.all([a.e("libs_icons-wc_icons_CardActionFluentButton_svg-libs_icons-wc_icons_HideV2_svg-libs_icons-wc_i-46086e"),a.e("shopping-card-wce")]).then(a.bind(a,12803)))),c(o.x.shoppingEdgeInsightsCard,(()=>Promise.all([a.e("libs_icons-wc_icons_CardActionFluentButton_svg-libs_icons-wc_icons_HideV2_svg-libs_icons-wc_i-46086e"),a.e("shopping-edge-insights-card")]).then(a.bind(a,29149)))),c(o.x.shoppingSmartListWC,(()=>a.e("shopping-smart-list").then(a.bind(a,3807)))),c(o.x.sideBar,(()=>a.e("side-bar").then(a.bind(a,65672)))),c(o.x.socialAvatar,(()=>a.e("social-avatar").then(a.bind(a,97749)))),c(o.x.socialBarWC,(()=>a.e("social-bar-wc").then(a.bind(a,80405)))),c(o.x.socialReportMenu,(()=>a.e("social-report-menu").then(a.bind(a,29178)))),c(o.x.profilePromoCard,(()=>a.e("profile-promo-card").then(a.bind(a,32508)))),c(o.x.premiumProfilePromoCard,(()=>a.e("premium-profile-promo-card").then(a.bind(a,58240)))),c(o.x.sportsCardWC,(()=>a.e("sports-card-wc").then(a.bind(a,61904)))),c(o.x.sportsOlympicCardWC,(()=>a.e("sports-olympic-card-wc").then(a.bind(a,50241)))),c(o.x.spotlightCardWC,(()=>a.e("spotlight-card-wc").then(a.bind(a,61713)))),c(o.x.superNav,(()=>a.e("super-nav").then(a.bind(a,504)))),c(o.x.toastWC,(()=>a.e("toast-wc").then(a.bind(a,35179)))),c(o.x.pillWC,(()=>a.e("pill-wc").then(a.bind(a,74531)))),c(o.x.signInBannerWC,(()=>a.e("sign-in-banner-wc").then(a.bind(a,54187)))),c(o.x.signInControlWC,(()=>a.e("sign-in-control-wc").then(a.bind(a,99299)))),c(o.x.signInFlyoutWC,(()=>a.e("sign-in-flyout-wc").then(a.bind(a,604)))),c(o.x.stickyPeek,(()=>a.e("sticky-peek").then(a.bind(a,10104)))),c(o.x.superCoachMarkWC,(()=>a.e("super-coach-mark-wc").then(a.bind(a,75885)))),c(o.x.backToTopButton,(()=>a.e("back-to-top-button").then(a.bind(a,19106)))),c(o.x.themePickerWC,(()=>a.e("theme-picker-wc").then(a.bind(a,3563)))),c(o.x.trafficCardWC,(()=>Promise.all([a.e("weather-data-connector"),a.e("traffic-card-wc")]).then(a.bind(a,39721)))),c(o.x.travelDestination,(()=>a.e("travel-destination").then(a.bind(a,32059)))),c(o.x.trendingNowWC,(()=>a.e("trendingNowWC").then(a.bind(a,60672)))),c(o.x.trendingTopics,(()=>a.e("trendingTopics").then(a.bind(a,89266)))),c(o.x.verticalLeftNav,(()=>a.e("vertical-left-nav").then(a.bind(a,6089)))),c(o.x.videoCardWC,(()=>Promise.all([a.e("web-components_content-video-player_dist_index_js"),a.e("videoCard")]).then(a.bind(a,8642)))),c(o.x.voiceSearchWC,(()=>a.e("voice-search-wc").then(a.bind(a,13938)))),c(o.x.waffleWC,(()=>a.e("waffle-wc").then(a.bind(a,5565)))),c(o.x.weatherCardWC,(()=>Promise.all([a.e("weather-data-connector"),a.e("libs_icons-wc_icons_Edit_svg-libs_icons-wc_icons_Hurricane_svg-libs_icons-wc_icons_Pollen02_s-c96e60"),a.e("experiences_weather-card-wc_dist_index_js")]).then(a.bind(a,32491)))),c(o.x.welcomeGreetingWC,(()=>Promise.all([a.e("libs_icons-wc_icons_Edit_svg-libs_icons-wc_icons_Hurricane_svg-libs_icons-wc_icons_Pollen02_s-c96e60"),a.e("welcomeGreeting")]).then(a.bind(a,65808)))),c(o.x.xfeedWC,(()=>a.e("xfeed").then(a.bind(a,57570))));a(27868);var d=a(25777),r=a(67267),l=a(83490),b=a(49982),f=a(9332),p=a(75270),u=a(21952),g=a(12108),h=a(33799),m=a(83097),v=a(33954),w=a(20390),y=a(8665),x=a(54533),C=a(21050),S=a(22704),_=a(19388),k=a(14752),P=a(26415),T=a(68364),F=a(37912),L=a(24528),A=a(43980),D=a(53899),U=a(81171),j=a(69152),E=a(7009),M=a(24606),$=a(14211),I=a(21343),W=a(87538),R=a(9879),B=a(14165),H=a(14989),O=a(88828),N=a(20126),V=a(72344),z=a(29815),G=a(71443),q=a(37299),X=a(36478),Z=a(52144),K=a(9344),Q=a(35357),Y=a(65135),J=a(75816),ee=a(62380),te=a(21598),ae=a(22746),ne=a(26540),ie=a(98864),oe=a(75192);const se=(0,a(12884).Td)().endsWith(".cn")?"//assets.msn.cn":"//assets.msn.com",ce=`\n    body {\n        margin: 0;\n        font-family: Segoe UI, Segoe UI Midlevel, Segoe WP, Arial, sans-serif;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Light vi Subset), url(${se}/statics/fonts/Segoe-UI-Light-WF-subset_vi.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 00F0, U + 00FE, U + 0102, U + 0103, U + 0110, U + 0111, U + 0129, U + 0169, U + 01AF, U + 01B0, U + 1EA0 - U + 1EF9, U + 20AB;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Semilight vi Subset), url(${se}/statics/fonts/Segoe-UI-Semilight-WF-subset_vi.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 00F0, U + 00FE, U + 0102, U + 0103, U + 0110, U + 0111, U + 0129, U + 0169, U + 01AF, U + 01B0, U + 1EA0 - U + 1EF9, U + 20AB;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI vi Subset), url(${se}/statics/fonts/Segoe-UI-WF-subset_vi.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 00F0, U + 00FE, U + 0102, U + 0103, U + 0110, U + 0111, U + 0129, U + 0169, U + 01AF, U + 01B0, U + 1EA0 - U + 1EF9, U + 20AB;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Semibold vi Subset), url(${se}/statics/fonts/Segoe-UI-Semibold-WF-subset_vi.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 00F0, U + 00FE, U + 0102, U + 0103, U + 0110, U + 0111, U + 0129, U + 0169, U + 01AF, U + 01B0, U + 1EA0 - U + 1EF9, U + 20AB;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Bold vi Subset), url(${se}/statics/fonts/Segoe-UI-Bold-WF-subset_vi.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 00F0, U + 00FE, U + 0102, U + 0103, U + 0110, U + 0111, U + 0129, U + 0169, U + 01AF, U + 01B0, U + 1EA0 - U + 1EF9, U + 20AB;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Light Eastern Europe Subset), url(${se}/statics/fonts/Segoe-UI-Light-WF-subset_east-europe.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 0104, U + 0106, U + 0107, U + 0105, U + 0118, U + 0119, U + 0141, U + 0142, U + 015A, U + 015B, U + 0179, U + 017A, U + 017B, U + 017C;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Semilight Eastern Europe Subset), url(${se}/statics/fonts/Segoe-UI-Semilight-WF-subset_east-europe.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 0104, U + 0106, U + 0107, U + 0105, U + 0118, U + 0119, U + 0141, U + 0142, U + 015A, U + 015B, U + 0179, U + 017A, U + 017B, U + 017C;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Eastern Europe Subset), url(${se}/statics/fonts/Segoe-UI-WF-subset_east-europe.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 0104, U + 0106, U + 0107, U + 0105, U + 0118, U + 0119, U + 0141, U + 0142, U + 015A, U + 015B, U + 0179, U + 017A, U + 017B, U + 017C;\n    }\n\n    @font-face {\n        font-family: Segoe UI Midlevel;\n        font-style: normal;\n        src: local(Segoe UI Bold Eastern Europe Subset), url(${se}/statics/fonts/Segoe-UI-Bold-WF-subset_east-europe.woff2) format('woff2');\n        font-display: swap;\n        unicode-range: U + 0104, U + 0106, U + 0107, U + 0105, U + 0118, U + 0119, U + 0141, U + 0142, U + 015A, U + 015B, U + 0179, U + 017A, U + 017B, U + 017C;\n    }\n\n    @font-face {\n        font-display: swap;\n        font-family: "Segoe UI";\n        font-style: normal;\n        font-weight: 100 900;\n        src: url("https:${se}/staticsb/statics/latest/fonts/segoeuivf/SegoeUI-Roman-VF-subset_web.woff2") format('woff2');\n    }\n\n    @font-face {\n        font-family: Segoe UI Variable Display Semibold;\n        font-style: normal;\n        src: url("https:${se}/staticsb/statics/latest/fonts/segoeuivf/Segoe-UI-Variable-Static-Display-Semibold.woff2") format('woff2');\n        font-display: swap;\n    }\n`;var de;!function(e){e.addSegoeUIVariableFont=function(){const e=document.createElement("style");e.setAttribute("type","text/css"),e.appendChild(document.createTextNode(ce)),document.head.appendChild(e)}}(de||(de={}));var re=a(16517),le=a(44979),be=a(2278),fe=a(54804),pe=a(970),ue=a(65337),ge=a(46336),he=a(94788),me=a(48799),ve=a(53578),we=a(70694),ye=a(31293),xe=a(39125),Ce=a(40715),Se=a(98358),_e=a(75367),ke=a(4734),Pe=a(38349),Te=a(76868),Fe=a(32717),Le=a(42420),Ae=a(75244),De=a(79485),Ue=a(37457),je=a(44775),Ee=a(20147),Me=a(31172),$e=a(77162),Ie=a(99347),We=a(62264),Re=a(10495),Be=a(98533),He=a(41751),Oe=a(60469),Ne=a(15564),Ve=a(82423),ze=a(69973),Ge=a(70587),qe=a(80329);const Xe=function(){(0,B.jU)(12);const e=[0,B.xs+32,B._3+32,B.Xn+32,B.xX+32,B.sc+32];return(0,B.lE)(),e}();var Ze=a(8371),Ke=a(58155),Qe=a(2312);class Ye{static getTelemetryProperties(e,t,a,n){const i=re.jG.ActivityIdLowerCaseNoHypens;let o="unknown",s="unknown";const c=!("false"===Ke.c.getQueryParameterByName("enableTrack",n)),d=new URLSearchParams(e.location.search);s=d.get("startpage"),o=d.get("firstlaunch");let r="0",l="False";if(fe.Al&&fe.Al.ClientSettings){const e=fe.Al.ClientSettings;"true"===e.static_page&&(l="True"),r=e.browser&&"true"===e.browser.ismobile||e.deviceFormFactor===ze.p.Phone?"1":"0"}const b=re.jG&&re.jG.CurrentRequestTargetScope&&re.jG.CurrentRequestTargetScope.pageExperiments?re.jG.CurrentRequestTargetScope.pageExperiments.join(","):void 0,f=Object.assign({activityId:i,autoRefresh:"0",canvas:"Browser",channel:"anaheim",dDgk:"unknown",department:"antp",dImd:r,domainId:"340",enable:c,environment:re.jG.Environment,flightid:b,isStaticPage:l,isSignedIn:a?"True":"False",localeCode:re.jG.CurrentMarket,msnocid:"1"===s?"msedgdhp":"msedgntp",pageConfiguration:null,pageName:"1"===o?"FRE":"default",pageProduct:"anaheim",pageTitle:e.document.title,pageType:"1"===s||"1"===o?"dhp":"ntp",pageUrl:e.document.URL,pageVersion:"15",serverImpressionGuid:i,storeocid:"anaheim_ntp",tmpl:"",vertical:"homepage",afd:"",waitForPageSettingsToUpdateTrack:!0},t);return function(e){if(!e)return;et=!1,document.addEventListener(Ze.g.trackValuesUpdated,tt)}(f.waitForPageSettingsToUpdateTrack),f}static getPageTelemetryContract(e,t,a,n,i,o){const s="0"!==(0,pe.L)().get("dsp");return{page:{appType:re.jG.AppType,name:e.pageName,config:e.pageConfiguration,product:e.pageProduct,type:e.pageType,canvas:e.canvas,has3PSearch:!s,isSearchAB:!1,isAdEnabled:!1,isAutoRefresh:!1,isJSEnabled:!0,isStatic:t,ocid:e.msnocid||e.storeocid,url:o,content:{author:"",brand:"",brandId:"",domainId:e.domainId,id:"",parentId:"",partnerName:"",source:"",subcategory:e.department,title:window.document.title,topic:"",vertical:e.vertical},viewType:(0,O.vi)()},feed:{id:"",type:(0,ye.ll)()},flight:{id:re.jG.CurrentRequestTargetScope&&re.jG.CurrentRequestTargetScope.pageExperiments&&re.jG.CurrentRequestTargetScope.pageExperiments.join(","),tmpl:[]},locale:{mkt:re.jG.CurrentMarket},browser:{isMobile:a,deviceGroup:"unknown"},user:{isSignedIn:n,isSso:!1,aadState:i?h.mv.AadAccount:h.mv.NonAadAccount}}}}let Je=!1,et=!0;function tt(){document.removeEventListener(Ze.g.trackValuesUpdated,tt),et=!0,Je&&Y.M.flush()}fe.Al.IsPrerender&&"visible"!==document.visibilityState?(0,Qe.lr)().then((()=>{Je=!0,et&&Y.M.flush()})):Je=!0;var at=a(57905),nt=a(93450),it=a(37180),ot=a(39439),st=a(91470),ct=a(75970),dt=a(16660),rt=a(70188),lt=a(16776),bt=a(85663),ft=a(37209),pt=a(33768),ut=a(1033);const gt=(0,ct._)(re.jG.AppType,re.jG.CurrentRequestTargetScope),ht=new le.fH({spec:(e=>({ver:`edgenext.${Ge.j4.ver}.1`,spec:Object.assign(Object.assign({},Ge.j4.spec),{wpoData:{clientValue:()=>(0,ue.$o)().getItem(e)},breakpoint:{clientValue:()=>(0,qe.wk)(window.innerWidth,Xe)}})}))(gt)}),mt=(0,le.Nd)(ht.data.locationHref,"locationHref");(0,v.E)(new w.M(mt)),(0,y.z)(mt,x.Im);const vt=(0,C.oA)("entryPoint","entryPoint"),wt=vt&&vt.startMeasure("init").endMeasure;function yt(e){Y.M.sendAppErrorEvent(Object.assign(Object.assign({},P.nPk.ErrorFetchingAppAnonCookie),{message:"Error while fetching APP_ANON cookie.",pb:Object.assign(Object.assign({},P.nPk.ErrorFetchingAppAnonCookie.pb),{customMessage:`Error: ${e}`})}))}function xt(){return re.jG.CurrentRequestTargetScope&&re.jG.CurrentRequestTargetScope.audienceMode===g.F.Enterprise}function Ct(){return(0,n.mG)(this,void 0,void 0,(function*(){const e=yield me.U.getConfig({experienceType:"ExperienceTrackerEdgeNextData",instanceSrc:"default"}),t=null==e?void 0:e.properties,{feedContentSourceMap:a}=t||{},n=a&&(0,st.f)(a);let i="default";return n===D.iz.Office365?i="entnewshp":n===D.iz.Gaming&&(i="gaming"),i}))}function St(e){return(0,n.mG)(this,void 0,void 0,(function*(){if(e&&(e.includes("prg-wpo-nth")||e.includes("prg-wpo-nth2"))){const e="WpoInit";k.A.startMark(e),yield ut.S.initialize(re.jG.CurrentRequestTargetScope,re.jG.AppType,re.jG.ActivityId,!1),k.A.endMark(e),(0,S.Ou)()[e]=Math.round(performance.now())}}))}(0,be.HB)(),(0,n.mG)(void 0,void 0,void 0,(function*(){var e,t,o,s,c,v,w,y;try{const x=Math.round(performance.now()),C=re.jG.CurrentRequestTargetScope&&re.jG.CurrentRequestTargetScope.pageExperiments,se=fe.Al&&fe.Al.ClientSettings||{},{domain:ce,geo_country:be,pageGenTime:Ge="",pcv:qe,static_page:Xe}=se,Ze=(0,Ue.$)(ce,re.jG.Environment,re.jG.IsChinaCompliance,fe.Al.IsBlendedEnterprise),Ke=C&&C.includes("prg-pv-tracker"),Qe=C&&C.includes("prg-tel-trdom"),Je=C&&C.includes("prg-tel-mtrdom"),et=Qe||Je?["ext"]:void 0,tt=Qe||Je||!1,ot=Je||!1;(0,Y.u)(new je.o({anonCookieName:"app_anon",trackingSystems:Ze,autoCaptureContentView:!1,useEventQueue:!0,inheritPropertyList:et,inheritByTraversingDOM:tt,memoizeInheritedProperties:ot})),y="First track clientlog after initing telemetry",Ke&&Y.M.sendClientLogEvent({message:`${y}, timeline: ${performance.now()}, prerender: ${fe.Al.IsPrerender}`,type:"information"});const st=(0,pe.L)(),ct=(0,ue.$o)().getItem("ntpURL");let gt=null;ct&&(gt=new URLSearchParams(ct));let vt=!1;st.get("external")?gt&&(vt=!0,gt.forEach((function(e,t){st.has(t)&&(vt=!1)}))):(0,ue.$o)().setItem("ntpURL",window.location.search),vt&&(gt.append("external",1),(0,W.Z)({newUrl:"?"+gt}));const _t=st.get("startpage"),kt=st.get("firstlaunch"),Pt="true"===Xe?"True":"False",Tt=window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)");let Ft=!1;Tt&&(Ft=!!Tt.matches,Tt.addEventListener("change",(e=>{Y.M.updatePageMetadata({page:{theme:e.matches?"dark":"light"}})}))),Y.M.initPage({page:{name:"1"===kt?"FRE":"default",config:null,isStatic:Pt,product:fe.Al.IsBlendedEnterprise?"entnews":"anaheim",type:"1"===_t||"1"===kt?"dhp":"ntp",url:mt,theme:Ft?"dark":"light"},flight:{id:C&&C.join(","),tmpl:[]},locale:{mkt:re.jG.CurrentMarket},browser:{deviceGroup:"unknown"}},re.jG.ActivityIdLowerCaseNoHypens,re.jG.BuildVersion),(0,rt.j)(),(0,dt.j)();const Lt={refs:{refA:re.jG.ActivityIdLowerCaseNoHypens||"",refC:Ge},cookies:qe&&(0,ge.fB)(JSON.stringify(qe)),iso:be};Y.M.addOrUpdateCustomProperty("server-debug-info",`${JSON.stringify(Lt)}`);const At=(0,S.Ou)();!function(e){let t=0;const a=(0,Be.Gy)();a&&(t=Date.now()-Math.round(window.performance.now())-a),e.refreshDelay=t}(At);const Dt=st.get("title");Dt&&(document.title=Dt),window&&window.NONCE_ID&&(a.nc=window.NONCE_ID),(0,he.rh)(Y.M.sendAppErrorEvent.bind(Y.M));const Ut=nt._.getInstance(),jt=Ut.rootReducer,Et=Ut.store,Mt=(0,le.Nd)(ht.data.wpoData,"wpoData",!1);re.jG.WpoData=Mt;const $t=(0,ge.sF)(Mt);$t&&$t.dddTmplHeaderValue&&Y.M.addOrUpdateTmplString($t.dddTmplHeaderValue),W.l.setHandlers({invalidatePageCacheHandler:()=>(0,n.mG)(void 0,void 0,void 0,(function*(){yield Promise.all([Le.U.purgeCacheAsync(Le.R.base),Le.U.purgeCacheAsync(Le.R.followedTopics),Le.U.purgeCacheAsync(Le.R.subscribedPublishers),Le.U.purgeCacheAsync(Le.R.publishersProfile)])}))}),me.U.setTargetScopeAndConfigServiceParams(),me.U.initialize(Y.M.sendAppErrorEvent.bind(Y.M));const It={experienceType:"EdgeChromiumPageWC",instanceSrc:"default"},[Wt]=yield Promise.all([me.U.getConfig(It),St(C)]),Rt=Wt&&Wt.properties;re.jG.UseOneServiceAuthEndpoints=!0,re.jG.UseOneServiceAnonAuthEndpoints=!0,re.jG.EnableFiveColLayout=!0,((null==C?void 0:C.includes("prg-wpo-sixcol"))&&(null===(e=null===re.jG||void 0===re.jG?void 0:re.jG.CurrentRequestTargetScope)||void 0===e?void 0:e.audienceMode)===g.F.Adult||(null==C?void 0:C.includes("prg-wpo-sixcol2")))&&(re.jG.EnableSixColLayout=!0),(Rt.linearZoomRatio||Rt.leftNavColumnWidth)&&(0,R.kL)(Rt.enableZoomForSmallScreen)&&(0,R.SN)(Rt.linearZoomRatio,Rt.leftNavColumnWidth);let Bt=!1;(fe.Al.CurrentFlightSet.has("prg-newpc-lininfo")||fe.Al.CurrentFlightSet.has("prg-newpc-lininsp")||fe.Al.CurrentFlightSet.has("prg-newpc-ctrl"))&&(Bt=yield new Promise((e=>{const t=window&&window.chrome&&window.chrome.authPrivate;if(t&&t.getPrimaryAccountInfo)try{t.getPrimaryAccountInfo((t=>e(!!t[E.r2.accountId])))}catch(t){e(!1)}else e(!1)}))),Rt.enableFeedLayoutPromotion?yield Promise.all([M.d.checkForSingleColumnPromotionNew(Rt.enableWpoLayoutPromoCoolDown,Rt.coolDownTimeInSecondsPromoted,Rt.coolDownTimeInSecondsSelected),ie.N.loadPslFeedLayout(Bt)]):yield Promise.all([M.d.checkForSingleColumnPromotion(Rt.enableWpoLayoutPromoMoreLayouts,Rt.enableWpoLayoutPromoCoolDown,Rt.coolDownTimeInSecondsPromoted,Rt.coolDownTimeInSecondsSelected),ie.N.loadPslFeedLayout(Bt)]),(0,X.Q)();const Ht=(0,lt.n)(jt,Et,ht);if(new Se.m(i.z.MilestoneData,"",jt,new _e.c,Et,void 0,ht),new U.i(i.z.BingImageData,"",Ut.rootReducer,new j.w,Ut.store,void 0,ht),new Ee.L(i.z.TopSitesLayoutData,"",Ut.rootReducer,new Me.A,Ut.store,void 0,ht),new $.y(i.z.CoachmarkData,"",Ut.rootReducer,new I.W,Ut.store,void 0,ht),new ae.D(i.z.ExperienceLoadedData,"",Ut.rootReducer,new ne.d,Ut.store,void 0,ht),new Ae.m(i.z.SignInData,"",Ut.rootReducer,new De.e,Ut.store,void 0,ht),new ee.P(i.z.DefaultBrowserReclaimData,"",Ut.rootReducer,new te.C,Ut.store,void 0,ht),new F.z(i.z.BackgroundData,"",Ut.rootReducer,new L.L,Ut.store,void 0,ht),xt()){const e=()=>(0,n.mG)(void 0,void 0,void 0,(function*(){const e=yield null===re.jG||void 0===re.jG?void 0:re.jG.AccountInfoPromise;return{client:{id:ve.I4,friendlyName:"Enterprise NTP App"},account:e}}));let a=new d.a(new r.W(e));(null===(t=Rt.authManager)||void 0===t?void 0:t.useRetryDecorator)&&(a=(0,l.w)(a));const i=(null===(o=Rt.authManager)||void 0===o?void 0:o.useInMemoryCache)?new b.y:new f.o;(0,p.BV)(new p.U(a,i,u.oc))}const Ot=document.createElement("style");Ot.setAttribute("type","text/css"),Ot.innerHTML="\n                            body {\n                                margin: 0;\n                                font-family: Segoe UI, Segoe UI Midlevel, Segoe WP, Arial, sans-serif;\n                            }",document.head.appendChild(Ot),Rt.enableDelayVariableFont?requestAnimationFrame((()=>(0,n.mG)(void 0,void 0,void 0,(function*(){yield(0,_.b1)(),de.addSegoeUIVariableFont()})))):Rt.enableVariableFont&&de.addSegoeUIVariableFont(),(0,He.z)().withShadowRootMode("closed").withElementDisambiguation((()=>at.h.ignoreDuplicate)).register((0,Oe.k)()),Ne.UWU.withDefault(2),At.AppStartStart=Math.round(performance.now()),k.A.startMark("AppStart"),Ut.start(),At.AppStartEnd=Math.round(performance.now()),k.A.endMark("AppStart");const Nt=Ht.getCurrentState().signedIn,Vt=Nt===h.Hy.SignedIn,zt=function(){if(xt()){const e=re.jG.ResolvedAccountInfo;return e&&e.account_type&&e.account_type===h.Qm.AAD}return!1}(),Gt=Z.A.get(Z.U.CookieConsentStatus);let qt;Gt!==V._.NotRequired&&(Y.M.disableTrackingSystem(J.G.CTag),Y.M.disableTrackingSystem(J.G.Comscore)),Z.A.get(Z.U.CookieConsentProvider)===z.i.OneTrustBanner&&window.addEventListener(G.C,(()=>{const e=Y.M.getPageMetadata();e&&e.contract&&e.contract.page&&(e.contract.page.consentChanged="occ",Y.M.enableTrackingSystem(J.G.CTag),Y.M.sendPageView(null,!0,null,J.G.CTag))})),re.jG.CurrentRequestTargetScope.audienceMode===g.F.Enterprise?qt={msnocid:"entnewsntp",pageName:yield Ct(),pageProduct:"entnews"}:re.jG.CurrentRequestTargetScope.os===N.Q.Xbox&&(qt={msnocid:"xboxntp",pageName:yield Ct(),pageProduct:N.Q.Xbox});const Xt=Ye.getTelemetryProperties(window,qt,Vt||zt,mt);Xt.enable||Y.M.disableTrackingSystem(J.G.All);const Zt=se.browser&&"true"===se.browser.ismobile||se.deviceFormFactor===ze.p.Phone;re.jG.TrackInfo={sitePage:{page_product:"anaheim",page_type:se.pagetype}},yield(0,Ve.Ki)({instanceId:null,configRef:{experienceType:"ChromiumPageSettings",instanceSrc:"default"}});const Kt=yield(0,Ve.oU)(i.z.ChromiumPageSettings),Qt=null!==(s=Rt.horizontalTabLayoutGap)&&void 0!==s?s:12,Yt=null!==(c=Rt.bufferSizeOverride)&&void 0!==c?c:32,Jt=Kt.officeLeftRailEnabled()?100:0,ea=yield Kt.getLayoutStateAsync();(0,pt.jt)(Rt.enableWpoTopSitesConfigOverride,Rt.topSitesCollapsibleControlConfig);const ta=Kt.getCurrentState(),aa=(0,A.j)(ta.selectedFeedDisplaySetting,ta.currentBackgroundImageType,ta.greetingEnabled,ta.hideDefaultTopSites);if(ta.currentLayout!==aa){let e;if(aa!==D.nP.custom){const t=D.Wi[aa];e={currentBackgroundImageType:t.current_background_image_type,currentLayout:aa,greetingEnabled:t.greeting,imageOfTheDayEnabled:t.current_background_image_type!==D.HX.off,quickLinksEnabled:t.quick_links,hideDefaultTopSites:t.hide_promoted_links,selectedFeedDisplaySetting:t.feeds_position}}else e=Object.assign(Object.assign({},ea),{currentLayout:aa});Kt.updateLayout(e),(0,Pe.yV)(Te.y.FeedLayoutSwitch)}ea.verticalTabsOpened&&Rt.verticalLayoutGap?(0,B.jU)(Rt.verticalLayoutGap):(0,B.jU)(Qt);let na=[B.xs+Yt+Jt,B._3+Yt+Jt,B.Xn+Yt+Jt,B.xX+Yt+Jt,B.sc+Yt+Jt];const ia=new Map([[H.K$.c1,B.xs+Yt+Jt],[H.K$.c2,B._3+Yt+Jt],[H.K$.c3,B.Xn+Yt+Jt],[H.K$.c4,B.xX+Yt+Jt],[H.K$.c5,B.sc+Yt+Jt]]);if(we.p.sixColSupported()){const e=Rt.sixColBufferSize||Yt;na.push(B.OE+e+Jt),ia.set(H.K$.c6,B.OE+e+Jt)}const{zoomRatio:oa,maxWidthForZoom:sa}=Rt||{},ca=null===(v=null===document||void 0===document?void 0:document.documentElement)||void 0===v?void 0:v.clientWidth;oa&&0!==oa&&ca<(null!=sa?sa:1e4)&&(na=na.map((e=>e*oa)),ia.forEach(((e,t)=>{ia.set(t,e*oa)}))),(0,O.Bn)().breakpoints=na,(0,H.q7)(ia);const da=Ye.getPageTelemetryContract(Xt,Xt.isStaticPage,Zt,Vt,zt,mt);if(Y.M.updatePageMetadata(da),wt&&wt(),Rt.enablePgcForTreatmentAPI){const e=(0,it.y)(ea,Vt);ut.S.initialize(re.jG.CurrentRequestTargetScope,re.jG.AppType,re.jG.ActivityId,!0,e)}else ut.S.initialize(re.jG.CurrentRequestTargetScope,re.jG.AppType,re.jG.ActivityId,!0);if((0,Ve.oU)(i.z.ChromiumPageSettings).then((e=>(0,n.mG)(void 0,void 0,void 0,(function*(){var t,i,o;yield(0,$e.FA)(yt,Nt);const s=yield e.getPrimaryAccountInfoAsync();window.chrome&&window.chrome.authPrivate?(window.chrome.authPrivate.onSignInStateChanged.addListener((()=>(0,n.mG)(void 0,void 0,void 0,(function*(){const t=yield e.getPrimaryAccountInfoAsync(!1),a=(0,K.ej)(Ie.Vu);if(t.accountType===E.l7.MSA&&t.accountId!==s.accountId&&(0,bt.isNullOrUndefined)(a))return Y.M.sendAppErrorEvent(Object.assign(Object.assign({},P.MCu.EstablishSignedInState),{message:"Sign In Refresh Required. New browser account found."})),void(0,W.Z)();(0,We.B)(t,null,!0)})))),yield(0,We.B)(s)):Y.M.sendAppErrorEvent(Object.assign(Object.assign({},P.MCu.EdgeChromiumAuthPropertyNotAvailable),{message:"AuthPrivate property is not available"}));const c=(0,K.ej)(m.IR.AnonCookieExists);if(s.accountType===E.l7.MSA&&(0,bt.isNullOrUndefined)(c)&&!re.jG.IsChinaCompliance){const e=[(0,_.b1)()];fe.Al.IsPrerender&&e.push((0,Fe.eC)()),Promise.all(e).then((()=>(0,n.mG)(void 0,void 0,void 0,(function*(){(0,Re.vr)(!0)}))))}e.setAccountFlag(Bt);const d=yield e.getLayoutStateAsync(),r=(0,it.y)(d,s.accountType===E.l7.MSA);if(Y.M&&(Y.M.updatePageConfiguration(r),(0,Fe.eC)().then((()=>{const e={feed:{layout:ie.N.getPslFeedLayoutType===oe.sj.SingleColumn?"singlecol":"multicol"}};Y.M.updatePageMetadata(e,!0);const t=(0,ye.$z)();t&&(Y.M.updatePageMetadata({feed:{id:t}}),"gaming"===t&&Y.M.updatePageMetadata({page:{content:{vertical:"gaming"},type:"verthp"}})),Y.M.sendPageView(null,!fe.Al.newRidNeeded,null)})),(0,ke.F_)().then((()=>(0,n.mG)(void 0,void 0,void 0,(function*(){(yield a.e("ocvFeedback").then(a.bind(a,22251))).setupOcvTelemetryData()}))))),r%4==3||r%4==2)try{window&&window.chrome&&window.chrome.ntpSettingsPrivate&&window.chrome.ntpSettingsPrivate.activateTrigger&&window.chrome.ntpSettingsPrivate.activateTrigger(null===(o=null===(i=null===(t=null===window||void 0===window?void 0:window.chrome)||void 0===t?void 0:t.ntpSettingsPrivate)||void 0===i?void 0:i.NTPTrigger)||void 0===o?void 0:o.TOP_SITES_VISIBLE)}catch(e){(0,T.OO)(e,P.Qv4,"Error invoking activateTrigger function")}(0,Be.cu)()})))),Promise.all([(0,Fe.eC)(),(0,ke.F_)()]).then((()=>{var e;const t=!!document.getElementById("onetrust-consent-sdk");(0,Q.hI)()&&!t&&Y.M.sendAppErrorEvent(Object.assign(Object.assign({},P.bid),{pb:Object.assign(Object.assign({},P.bid.pb),{customMessage:`oneTrustBannerScript: ${null===(e=document.getElementById(q.e))||void 0===e?void 0:e.getAttribute("src")}`})}))})),At.RenderRootStart=Math.round(performance.now()),k.A.startMark("RenderRoot"),(0,ft.o)(yield me.U.getEntryPointConfigRef(),"fluent-design-system-provider"),At.RenderRootEnd=Math.round(performance.now()),k.A.endMark("RenderRoot"),null===(w=null===fe.Al||void 0===fe.Al?void 0:fe.Al.CurrentFlightSet)||void 0===w?void 0:w.has("prg-wpo-clarity")){const e=Gt!==V._.NotRequired;Vt||zt||e||(0,ke.F_)().then((()=>(0,n.mG)(void 0,void 0,void 0,(function*(){const e=yield a.e("clarity").then(a.bind(a,61938));e.setupClarity(),re.jG.ClarityEnabled=!0,e.writeBasicTags()}))))}At.ClientInit=Math.round(performance.now()-x)}catch(e){yield function(e,t){return(0,n.mG)(this,void 0,void 0,(function*(){const a="isNetworkFailure"in e&&e.isNetworkFailure,n="Encountered a critical app error.",i=a?P.nPk.EdgeNextPageRenderFailedDueToNetwork:P.nPk.EdgeNextErrorPage;if((0,T.OO)(e,i,n),!t){const t=a?P.nPk.EdgeNextPageReloadedDueToNetwork:P.nPk.EdgeNextPageReloadedPageExceptionError,i=a?P.nPk.EdgeNextLocalNtpDueToNetwork:P.nPk.EdgeNextLocalNTPPageShownPageExceptionError;ot.F.tryReloadNtpPage(t,i,n,e)}}))}(e)}finally{(0,xe.D)((()=>Y.M.sendAppErrorEvent)),(0,Ce.g)((()=>Y.M.sendAppErrorEvent))}}))},17692:function(e,t,a){function n(){return n=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var n in a)Object.prototype.hasOwnProperty.call(a,n)&&(e[n]=a[n])}return e},n.apply(this,arguments)}a.d(t,{Z:function(){return n}})},16660:function(e,t,a){a.d(t,{j:function(){return u},X:function(){return r}});var n=a(67479),i=a(12968),o=a(20277);const s=Object.freeze({bind(){},unbind(){}}),c=Object.freeze({targetIndex:0,createBehavior:()=>s});class d extends n.m0{constructor(e,t){super(),this.metadataOrBinding=e,this.options=t,this._factory=null}get factory(){let e=this._factory;return null===e&&(this._factory=e=this.selectFactory()),e}createBehavior(e){return this.factory.createBehavior(e)}createPlaceholder(e){return i.SO.createCustomAttributePlaceholder("fast-telemetry",e)}static installFactorySelector(e){d.prototype.selectFactory=e}selectFactory(){return c}}function r(e,t){return new d(e,t)}class l{constructor(e,t,a){this.target=e,this.attribute=t,this.binding=a}bind(e,t){i.SO.setAttribute(this.target,this.attribute,this.binding(e,t))}unbind(){}}class b{constructor(e,t){this.binding=e,this.attribute=t,this.targetIndex=0}createBehavior(e){return new l(e,this.attribute,this.binding)}}class f{constructor(e,t){this.value=e,this.attribute=t,this.targetIndex=0}createBehavior(e){return e.setAttribute(this.attribute,this.value),s}}let p={dynamicBindings:!0,telemetryAttribute:"data-t"};function u(e=p){p=e,d.installFactorySelector((function(){const t=Object.assign({},p,this.options),a=this.metadataOrBinding;if("function"==typeof a){if(t.dynamicBindings){const e=new o.R(a);return e.targetName=t.telemetryAttribute,e}return new b(a,t.telemetryAttribute)}return new f(a,e.telemetryAttribute)}))}}},s={};function c(e){var t=s[e];if(void 0!==t)return t.exports;var a=s[e]={id:e,loaded:!1,exports:{}};return o[e].call(a.exports,a,a.exports,c),a.loaded=!0,a.exports}c.m=o,e=[],c.O=function(t,a,n,i){if(!a){var o=1/0;for(l=0;l<e.length;l++){a=e[l][0],n=e[l][1],i=e[l][2];for(var s=!0,d=0;d<a.length;d++)(!1&i||o>=i)&&Object.keys(c.O).every((function(e){return c.O[e](a[d])}))?a.splice(d--,1):(s=!1,i<o&&(o=i));if(s){e.splice(l--,1);var r=n();void 0!==r&&(t=r)}}return t}i=i||0;for(var l=e.length;l>0&&e[l-1][2]>i;l--)e[l]=e[l-1];e[l]=[a,n,i]},c.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return c.d(t,{a:t}),t},a=Object.getPrototypeOf?function(e){return Object.getPrototypeOf(e)}:function(e){return e.__proto__},c.t=function(e,n){if(1&n&&(e=this(e)),8&n)return e;if("object"==typeof e&&e){if(4&n&&e.__esModule)return e;if(16&n&&"function"==typeof e.then)return e}var i=Object.create(null);c.r(i);var o={};t=t||[null,a({}),a([]),a(a)];for(var s=2&n&&e;"object"==typeof s&&!~t.indexOf(s);s=a(s))Object.getOwnPropertyNames(s).forEach((function(t){o[t]=function(){return e[t]}}));return o.default=function(){return e},c.d(i,o),i},c.d=function(e,t){for(var a in t)c.o(t,a)&&!c.o(e,a)&&Object.defineProperty(e,a,{enumerable:!0,get:t[a]})},c.f={},c.e=function(e){return Promise.all(Object.keys(c.f).reduce((function(t,a){return c.f[a](e,t),t}),[]))},c.u=function(e){return e+"."+{ocvFeedback:"89a10712feb248d098d8",clarity:"0394c58f04e4aa405861",msccCookieBanner:"33bd1baa253920774704",oneTrustCookieConsentData:"9e76f91797f1e6b4ae9d",topicData:"4e04df19c994c4bf990b",poweredByData:"8d934c50f38e418267ab","category-data-connector":"0ab64a9055bd2f4c19b3",layoutPreferenceData:"31fc4154cdf13f310027","weather-data-connector":"ee66437d631955275715",CoachmarkData:"0d500c5bebc7f0321220",RewardsData:"3dfb456c8f763f31b10a",ExperienceLoadedData:"503d466bcf252ff0962b",DefaultBrowserReclaimData:"8abfe95ed5d89b77eb4c",RewardsCoachmarkData:"e9365abfea3460e2aab8",SignInData:"81c3c0c99a253c9ea77a",FeedNavHeaderData:"599a3827c3bf66e36e86","social-data-connector":"334a4b1348c54169b517","office-feed":"353a768e365b05c92528",articleFre:"33c8ba4ef8e4cf55e278",articleRelatedStories:"2783e18430e64ec5169d",articleTopComment:"38467e43e170954263d0","autos-carousel":"540cf42669b9cbda1d9d",autosMarketplaceCard:"e2520a9dd57ec9eaa120",bingHealth:"6bfab2f93c2e1e963429",bingHealthCard:"71ff47f2945d4d774aa6",healthFitnessCarousel:"04a973354e16af6ba74a",breakingNewsWC:"30696502123168425126","card-actions-wc":"17641eae6950fe224499","casual-games-card":"014acc8d1c5ed299733c","holiday-effects":"d440b7d0e6cc184bcb7a","coachmark-wc":"d09f7e080a62f11883de","cold-start-wc":"d9a09f16678310ca83e7",conditionalBannerWC:"1b6483f504f118e5a038",promoBannerWC:"88e941e72b2b6bd3508a","content-group-card":"f1d01431f41c95d2ac9d","daily-brief-wc":"3cc7a1791841535f2986","xbox-feed-wc":"53d15a7e07a417e4e703","default-browser-reclaim-banner":"951ed0b26cf91730e845","dev-tools":"35bd9646a0da64f61d23","edge-shopping":"d1447dfba88a3fc3266e","esports-card":"2382e9f5f02da8f8b642","linked-in-card":"be9907e47f9c68dccbbd","esports-streams-card":"6baba8cca691867ab276",feedback:"de99928ebf2d225b9a41","feedback-dialog":"bf4f2cee997a8122f8b2","feed-navigation-header":"7a48ebed2deb0f4bde2b","health-tip-wc":"010cb971f446cd633f2c","horizontal-nav":"938f9bfbe35bedb7a56b","feed-toggle-wc":"4bf201884c17ee2ee504","game-card":"c00c153d7cab6d4f0558","gaming-compete-card":"c8484cfda007da07c8b4","gaming-match-card":"1434404447116a7c70f4","gaming-personalization-card":"28b4c4246be634a723cf","gaming-recentlyplayed-card":"a3da0e99ff9dc79a0f57","gaming-recommended-card":"db8b3e588ac9203ab081","gaming-reddit-card":"2107f83eb7d811c0f2e8","gaming-rewards-card":"64593f46fc3adbf324f4","gaming-stream-card":"68b5389e2d791a87575e","gaming-tournament-card":"e6889e8d0e20ac2d35d6","gaming-upcoming-card":"668f097fb0912fb4c9cb","gaming-video-card":"46d9fb53d18912782a07","general-elections":"d60f4f4ae898422bbf96","libs_feed-layout-common_dist_CommonTemplates_js-libs_super-feed_dist_utils_TtvrUtils_js-node_-0e1ec0":"d72340055f6b7d81c909","grid-view-feed":"71733f1facb634eed683","libs_icons-wc_icons_CardActionFluentButton_svg-libs_icons-wc_icons_HideV2_svg-libs_icons-wc_i-46086e":"d92acb3c12c6e9bf70b1","grocery-coupon-sd-card":"b97122802dd24112b97d","horoscope-answer-card-wc":"e36c2161df567e8b8074","image-search-wc":"23beb20403a5a46e83b3","interests-wc":"dc138c89f86f740fa6ce","layout-toggle":"d74c04c88d26b62767ab","linear-view-feed":"9f70bb69b5142c242599",locationMarker:"25a61533e81862eba677","lottery-card":"20adac0ec7b74db8b685","marketplace-card-wc":"9456c1f13519d874ffce","mobile-app-upsell":"03996135ffacb7762b9a","mobile-app-upsell-floating-btn":"e3d313db7a32e3814b18","libs_finance-service-library_dist_redux_FinanceData_connector_js":"a4efc344c9467ed0a720","money-info-card-wc":"b7b9460bd665d36ef9b0","ms-rewards-wc":"2d82824fca4e1f6ef5c3","newsbar-toggle":"25dd380498552b702c6e","news-segment-carousel":"cb1c03fd7caa42fdee65","notification-bell-wc":"b6ac749067cab284daab","office-coachmark":"8a1e63f2c7d5e486ea5d","office-leftrail":"eb6fed4632ad6209c28a","outlook-email-preview-wc":"3ca1d3119ea536567dec","on-this-day-card-wc":"3c96e3d97b72a85b5bde","on-this-day-card-small":"1c11de6a5ed030c9b36d","overlay-wc":"8ffa820cc170589d6455","personalize-nav-button":"6047fc1254dec534fcaf","pivots-nav-edgenext":"fe7466edfac4438039e8","pivot-content-wc":"ec84af652e724f8e5e3f","polls-card-wc":"78e67418373cbd499987","poweredby-legend-wc":"07951c11749377d515fb","prism-sd-card":"8068d881ccb02ef70558","publisher-carousel":"bd76f938c5af45ca741c","qna-card":"5c5affd89bfed3af4210","quiz-card":"4d9ac407178ec74accca","reaction-breakdown-dialog":"07a65597eb3ceee1cdef","recipes-sd-card":"24411f3823e5c64cc94b","recommended-interests":"fa45a7ec2f7eacc4f3b3","recommended-search-carousel-wc":"508b8f0d91a6e9545cd5","recommendedSites-wc":"2c2bc08a352f1fddb297","recommended-searches-card":"6230d725d0861fb99d5d","rewards-card-wc":"2489feb271b5aeb6113a","rewards-daily-set-card":"cbebb53c8ae1062eb56c","sd-card-mask-wc":"11a2b38e88278a1266b3","search-history-edgenext-wc":"002158ed2ea780aa9fd7","select-carousel":"ffafe172e4196ed9be0c","settings-dialog-edgenext-wc":"a7ed696732b7b9dfa457","shared-links":"ad60536a9c4c5009e43d","sharepoint-news-card":"3d6ceb16d84e29ae2410","shopping-card-wce":"370d780a969bba8fa047","shopping-edge-insights-card":"f0c8b36d5c1d6c5459e3","shopping-smart-list":"e3a6e1c06332d8e35fd9","side-bar":"3bb1d7cfa6be031bc0b9","social-avatar":"420ef366ba422db463d5","social-bar-wc":"16aacb1af22115734c5c","social-report-menu":"1181f8f7ac67c3613e65","profile-promo-card":"ec85c54553480c11ecf0","premium-profile-promo-card":"5e58ed01600df9501d13","sports-card-wc":"bb614cc41afeb9323107","sports-olympic-card-wc":"ed93b9db341184f65337","spotlight-card-wc":"0336d97d1d0342f0b456","super-nav":"349c0c91d242509020bd","toast-wc":"f37aee3b5a85cbc03cce","pill-wc":"9e181e41841dff634975","sign-in-banner-wc":"b81a0435a339fd608687","sign-in-control-wc":"54f91310fa97628feeca","sign-in-flyout-wc":"208a690099852b1fd68d","sticky-peek":"ec7149914d1d9fa35422","super-coach-mark-wc":"afbc07783aaa55578b4a","back-to-top-button":"c01bb978b3e12a3742d5","theme-picker-wc":"77375bffd905149fca89","traffic-card-wc":"abab08d45fedee3a546b","travel-destination":"93168f8e73bb7328f537",trendingNowWC:"880942258ff9f5205076",trendingTopics:"b1003b621962bde08858","vertical-left-nav":"3d39e62a7a4b93bbb2ac","web-components_content-video-player_dist_index_js":"86a2e1ae6a8261991df1",videoCard:"c810c62cfd43728d960a","voice-search-wc":"1663333d18f3deae250f","waffle-wc":"a9633126b0f7a971f0b5","libs_icons-wc_icons_Edit_svg-libs_icons-wc_icons_Hurricane_svg-libs_icons-wc_icons_Pollen02_s-c96e60":"8384c6f88eee14f28030","experiences_weather-card-wc_dist_index_js":"4610ecd0bb82700d6a78",welcomeGreeting:"8d762a0d9e2144998bea",xfeed:"beb1a4aa7b32e9a9e6f2","web-components_super-container_dist_register_MsftFeedModule_js":"3490d0156de01a865a41","web-components_super-container_dist_register_CsFeed19Module_js":"779f1269fbb0ae319f97","web-components_super-container_dist_register_CsFeed20Module_js":"e97654b8a21c61871ab8","web-components_super-container_dist_register_CsFeedNoHoverModule_js":"0381c3ecca5552812ba2","web-components_super-container_dist_register_CsFeedNoSeeMoreModule_js":"53f42d9e35d25639feee","web-components_super-container_dist_register_CsFeedModule_js":"b8de207dc4e6bd7ff990",node_modules_sortablejs_modular_sortable_esm_js:"883fee7723671fc5aa12","node_modules_intersection-observer_intersection-observer_js":"7ed8a4e215d160c64db4","weather-data-lazy-services":"0ec98612500f13082063","icon-assets-Accounts":"3b8970633418acc5ec2c","icon-assets-AdChoices":"3b4eb93f3e60905c532b","icon-assets-AlertWhite":"8d65da54b6e92b0fc818","icon-assets-AlertWhiteRound":"2ad87d84533eb0422e95","icon-assets-AllDone":"2f7e32755607938388cb","icon-assets-ArrowDown":"a806b59e3505bff8b748","icon-assets-ArrowUp":"506f3f859042bdfee59e","icon-assets-ArrowUpFill":"dd8aeb5eac539a316476","icon-assets-AirQuality":"461d5879674ce18ad3af","icon-assets-BingCardDefaultHotelImage":"e00f0d9cf0c618e4b2bf","icon-assets-BingHotelSeePrice":"12d875ce0cf88be4269f","icon-assets-BingLogo":"4d49c0198bb70aa005c1","icon-assets-BingRatingDarkStar":"de398169505fbeaf5e77","icon-assets-BingRatingLightStar":"e2f240f73ba8c8e09579","icon-assets-BingRatingDarkLightStar":"ceeedac40361daaead53","icon-assets-BlowingHail":"7e6dc44c5502b6da1c9b","icon-assets-BlowingHailWhite":"eca719eec6c4aa837fe8","icon-assets-BlowingHailV2":"c8fa79692f71da2f1562","icon-assets-BlowingSnow":"4afd88589e7b7925e242","icon-assets-BlowingSnowWhite":"6f387e126dd2f582374e","icon-assets-BlowingSnowV2":"ec94ec9c25f6eb6f43ac","icon-assets-CardActionButton":"59581410db45a4ca8ae0","icon-assets-CDCLogo":"63a968ac3788635daba8","icon-assets-ChatBubbleIcon":"492d1f5f4d34c5170cdf","icon-assets-Check":"e165c58bdb6edb72be19","icon-assets-CheckmarkOutline":"19ca2659b4378692b5f8","icon-assets-Chevron":"d77b7c04075b7e02cea8","icon-assets-ChevronDown":"7eacf271328cab1b372a","icon-assets-ChevronDownV3":"d11e19c9fa05c57920f4","icon-assets-ChevronRight":"69591c91df7dade4f9c5","icon-assets-PHChevronLeft":"5348f3197c3b36d615e1","icon-assets-PHChevronRight":"973dbb481d2ea2657f1c","icon-assets-ChevronWhite":"980a2576bd352fb3bebe","icon-assets-CircleClose":"34fecb0a2ed0797966c0","icon-assets-CircleCheckmark":"87e48728c119480689e1","icon-assets-CircleChevron":"214d920463a4df0b2ad0","icon-assets-ClearNight":"2c7474829dc4521f9295","icon-assets-ClearNightWhite":"c5c90f80f0ee36a39cee","icon-assets-ClearNightV2":"586d26fb8faf2ee164fc","icon-assets-ClearNightV3":"18c9b3440521cefa7c30","icon-assets-ClinicalTrialBot":"059632aaea93c265014f","icon-assets-Close":"a5a8adc9eed3425356f5","icon-assets-CloseV2":"be2139cc822d92aaafec","icon-assets-CloseThin":"40c9eefde0e80bdbf2bb","icon-assets-Cloudy":"3e766cbd193628ba27a6","icon-assets-CloudyWhite":"4854cc69b4cfa04da337","icon-assets-CloudyV2":"4c37edad60f49a6ba455","icon-assets-CloudyV3":"6c41cbf646e83fd14246","icon-assets-Comment":"345f793bc48776fe43da","icon-assets-CommentFill":"034c553080d963f4640b","icon-assets-ConflictWarning":"7d118cf646e0a3fc34de","icon-assets-Copy":"992a65788c210d9dac17","icon-coronavirus-icon":"9b90f55424ce5640f08c","icon-assets-DarkModeHotel":"f7ebda6ad325c82f1813","icon-assets-DataProvider":"52b9336b6e5e236d7664","icon-assets-DayTime":"c2749136b7f90042f160","icon-assets-Delete":"e1997b7a4e4fb4f0a322","icon-assets-DeleteTrashCan":"bd186bfbb45eb9fb51c2","icon-assets-Discover":"c94fc3f78b024514b58d","icon-assets-Dislike":"0878810c9079da460917","icon-assets-DislikeText":"a359b54410d41ba247f1","icon-assets-Disliked":"1c74d10725d6b1631cb8","icon-assets-DislikedText":"ec5b892f7b24eff5f590","icon-assets-DislikedLight":"f1b34a7d2f3eee22edd1","icon-assets-Docx":"d233ecb624be4e5f0e2a","icon-assets-DoubleTap":"9e4c190afeeb9f8248f2","icon-assets-Download":"cb3be4d18dafc258e59a","icon-assets-DownloadNoFill":"44869395f956c44929e1","icon-assets-DownArrow":"1e1cbeae3695620c1e25","icon-assets-Edit":"0159cbbd658cd8052c9d","icon-assets-EditNoFill":"97ab9b46654e668ed198","icon-assets-Edited":"34782d3666b735023095","icon-assets-EditedNoFill":"2093490a6d0ead59f843","icon-assets-Ellipses":"db39865a33b3d297dcdc","icon-assets-EllipsesLight":"74b2fdaf0faf8f6d0c7d","icon-assets-EllipsesV2":"e7c8c70314ea7761c7b9","icon-assets-Emoji":"a94ee9e4e8e3296fb96c","icon-assets-EmojiAngry":"724492c0aa5e16040d63","icon-assets-EmojiHeart":"e350df31b30e56973abc","icon-assets-EmojiLike":"53353b8a56867e9ee87b","icon-assets-EmojiSad":"410b2c0e473152325ae2","icon-assets-EmojiSurprised":"a8ee4e8b41b8b73183c2","icon-assets-EmojiThinking":"7aa1aa7ddad60eeb4ebf","icon-assets-EmptyDiscoverDark":"b47a84d55ea4433086cc","icon-assets-EmptyDiscoverLight":"80faa8fc4e269e84b8d6","icon-assets-EmptyMruDark":"fd1295bdb9c7a83df398","icon-assets-EmptyMruLight":"338d5db7ff6f73c63698","icon-assets-EmptyPinnedDark":"447be41c1b06c46ff019","icon-assets-EmptyPinnedLight":"0f3f40ab914a0028db63","icon-assets-EmptySharedDark":"5e1122f8b59b0a90179e","icon-assets-EmptySharedLight":"7f3464419cdb54aea37b","icon-assets-ErrorRocketLight":"1a7e03c7f7175c8766ab","icon-assets-ErrorRocketDark":"505125fdb725916f87c9","icon-assets-Excel":"058b28bc5dbdc78be4f0","icon-assets-Facebook":"21c87f1d91d07b8e7013","icon-assets-FacebookCircle":"56ba5e0362aa4ddf2b9c","icon-assets-FacebookText":"11fec3abc133525bac67","icon-assets-FacebookTextBlack":"c357dda31db9fd3b96ce","node_modules_svgr_webpack_dist_index_js_-svgo_components_icon_icons_Feedback_svg":"73f282361b060fef5c0c","icon-assets-Flag":"5b77b5b8e614748f7c93","icon-assets-FluentArrowTrending":"0fa5c0815abddcd2b887","icon-assets-FluentAttach":"ff73fa1ab63606657c11","icon-assets-FluentCalendar":"88e37878bdda68020bb6","icon-assets-FluentComment":"20f72d723b46d512427b","icon-assets-FluentCompassNorthwest":"09acfc06981bfa56a371","icon-assets-FluentEdit":"4d8363651785da0daf61","icon-assets-FluentFolderOpen":"3bc8c81d3daeb2741c61","icon-assets-FluentMention":"aac6b0c9bf85aa787a1d","icon-assets-FluentNews":"9dd1f57635573d51cddc","icon-assets-FluentPeople":"995a88f99e376a64961b","icon-assets-FluentVideo":"6bbbccf49afa12354d8f","icon-assets-Fog":"493a63b7ce23aad4cc58","icon-assets-FogWhite":"2bccdd9a740a57599a25","icon-assets-FogV2":"f24c598ae784012e960b","icon-assets-Form":"8f714941b1cb2b002dc6","icon-assets-Folder":"5703b0721cc79c562e86","icon-assets-FolderNoFill":"b1071a5c01b58190bf09","icon-assets-FolderOpen":"952bee36ef2e85b1b968","icon-assets-Forward":"29c07fb7b8c777dec876","icon-assets-FreezingRain":"a2855e4a67444afbc01e","icon-assets-FreezingRainWhite":"19b4b3657086147dc4de","icon-assets-FreezingRainV2":"45f061525b00dfec03ab","icon-assets-FrequentSitesEmpty":"67d3fdcd2537a49d9b37","icon-assets-FrequentSitesError":"797c7880d80884e7afde","icon-assets-Fullscreen":"b73ea4ce498c54214dff","icon-assets-GalleryFullscreen":"d9c7fb4b6dbfd802d5b5","icon-assets-GalleryMediaIcon":"fa1bae37d1ee3b333e67","icon-assets-GalleryPhotosIcon":"16289dd74e0573101c00","icon-assets-GeneralErrorDark":"88acfe5cb107b0a6f19e","icon-assets-GeneralErrorLight":"e7fc6be8b531634b049f","icon-assets-GenericFile":"1b5b93530240db299d83","icon-assets-Glimmer":"0742d85f93c6f744188f","icon-assets-GoBackArrow":"98b8fdd76191adf87059","icon-assets-GridView":"1e55bf3fa19c054a023a","icon-assets-HailDay":"9c3030729874f5293bc0","icon-assets-HailDayWhite":"59175f513d4e91267e6a","icon-assets-HailDayV2":"88326848b774b03e5cd0","icon-assets-HailNight":"b878a606c8f46961f6db","icon-assets-HailNightWhite":"50c6177f015d54af891b","icon-assets-HailNightV2":"2c93108b8352f42912ff","icon-assets-HazeSmoke":"8414ba7acdbd0a791d8a","icon-assets-HazeSmokeNightV2_106":"11ffb6b10790726d890f","icon-assets-HazeSmokeWhite":"a75939cfa2ce929de2dc","icon-assets-HazySmokeV2":"310cca7a1e0e7dc25cea","icon-assets-HeavySnow":"fe0ecc1cbccafda841e1","icon-assets-HeavySnowWhite":"b8df0ed711389b5ac4b4","icon-assets-HeavySnowV2":"4d7ef09cef37e5d97c35","icon-assets-Hide":"0a8d58be90f25a36f6da","icon-assets-HideV2":"b362ff1ee6da8cecdadf","icon-assets-HideStory":"3ca3e35132323e32739b","icon-assets-HideStoryV2":"9182d6b902a43c50fe6c","icon-assets-Home":"6b0bc772af32d457e4ff","icon-assets-HomeOutline":"566f7e6ad871d9783227","icon-assets-Hotel":"6fa4bb09be55468e4f5b","icon-assets-HurricaneFull":"8d166f33396a1eaa8744","icon-assets-Hurricane":"bc7eda891f05a9fd0046","icon-assets-Hurricane1":"531f389e74f3f50c4456","icon-assets-Hurricane2":"fb0409b6078b422abf14","icon-assets-Hurricane3":"402f8dd2c474dceb9c78","icon-assets-Hurricane4":"be716bafd935da79fc73","icon-assets-Hurricane5":"023f5e6c03b96fa013d6","icon-assets-HurricaneTC":"5344576c370a4c6eb139","icon-assets-HurricaneTD":"73b918569b2fddc1d445","icon-assets-HurricaneTS":"49fbdd572608d8959047","icon-assets-Information":"6e60aa98b460f76c0860","icon-assets-IndustryBriefcase":"b72c721fec30abdbffaf","icon-assets-IndustryBriefcaseOutline":"175b467add021f7d4021","icon-assets-InteractionRequiredDark":"90ca58fb15e6692b154b","icon-assets-InteractionRequiredLight":"023e1def34b816fa8ccc","icon-assets-Interested":"da913fbd66be34cfc319","icon-assets-LanguageAndContent":"aad1d517680541aafadc","icon-assets-LightBulb":"ec68f84341bb75b96c58","icon-assets-Layout":"ab2ccb222b9f8bb612c5","icon-assets-ListMenu":"0f581477fa2ba069e175","icon-assets-LightRain":"0df1b231baa5161ec40f","icon-assets-LightRainWhite":"bd73e45d4c8727e41d91","icon-assets-LightRainV2":"fd86b56709a44b3ea962","icon-assets-LightRainShowerDay":"df3a1ac377347c72e2bb","icon-assets-LightRainShowerNight":"da7ad30e76924b3689bf","icon-assets-LightSnow":"cabf655e09ee92096236","icon-assets-LightSnowWhite":"95ac4bed2452008f33d3","icon-assets-LightSnowV2":"03ab6721913da015133d","icon-assets-Like":"a0d53df62245b723238f","icon-assets-LikeText":"e297f90d6d2711074c25","icon-assets-Liked":"55b2d97cb08b2dbe4684","icon-assets-LikedText":"e27084566442afcfdd75","icon-assets-Line":"7ed8f19c86e3901ca17f","icon-assets-Link":"4eed66237890b8552575","icon-assets-LinkedIn":"7ca3400a2da9dbb1c1f2","icon-assets-LinkedInBlack":"95c4d486095962119535","icon-assets-LinkedInText":"f11cb53ebc5edc9d984f","icon-assets-LocaleLanguage":"227a51e40c119e0323f3",LocaleLanguageV2:"7557c67fe9df22aeb14d","icon-assets-Locate":"6587ca5c24919b593e31","icon-assets-LocateWhite":"9f1b9917357bbba5dcb6","icon-assets-LocationDetect":"6c2cf94529325f43e1ce","icon-assets-LocationDetectV2":"8addd8be43f4dd70cc1b","icon-assets-Lock":"ba6c0b3a34b0f538a312","icon-assets-Mail":"0f247261c6f1a4d78751","icon-assets-MailBlack":"0d3db6088e2efb16656c","icon-assets-MailNoFill":"399ec0f2546bbc8ac35c","icon-assets-MailRoundedCorners":"7f1ee8315b24776c781a","icon-assets-ManagedBriefcase":"5ef75a9f13dab37dc351","icon-assets-ManagedBriefcaseNoFill":"a3579facbffb7ffac4bc","icon-assets-MapEnterFullScreenMode":"bc20b247e3f97d3561b4","icon-assets-MapExitFullScreenMode":"dd35e69668c1ba702ddc","icon-assets-MapZoomIn":"bfb1d73718f3bd16b042","icon-assets-MapZoomOut":"433d722808960519a7ab","icon-assets-MediaIconSlideshow":"80aeeecce452909f143c","icon-assets-MediaIconVideo":"e30427dd1294825b67a5","icon-assets-Message":"95150f50ba365f004537","icon-assets-MessageNoFill":"e67348bb9a67363c5106","icon-assets-Messages":"9ced4c85c6ff56bbadb1","icon-assets-MsnLogo":"a773a7e5cb34a2eb0554","icon-assets-MicrosoftFullLogo":"744561bc3bce68e62673","icon-assets-MicrosoftLogo":"cce6f5e23463d5645d61","icon-assets-MicrosoftNews":"7c07986b6ce5c953376d","icon-assets-MicrosoftNews_FR":"9bae40620ec705787457","icon-assets-MicrosoftNews_ZH":"7db5563d7ccd88f76908","icon-assets-ModerateRain":"2bd4ee9199d37b2031b4","icon-assets-ModerateRainWhite":"dbea4ab01044c6404bbb","icon-assets-ModerateRainV2":"c7e45a38042519ce3cde","icon-assets-More":"d6935a5c85f382e8bf51","icon-assets-MoreV2":"3d6b35c84574b1c9539d","icon-assets-Movie":"eab0d333ee118cd8b594","icon-assets-NewsArticle":"e0a7f6310f7ece8e78af","icon-assets-NightTime":"f1885369fd1db96bc430","icon-assets-Notification-Five-Plus-Sign":"cff44a59f10989413600","icon-assets-OfferTimer":"50993aac5916e99f37c0","icon-assets-Office":"cc41ea3eeda9452d9e9a","icon-assets-OfficeFormsLogo":"60f04798467d65445aa1","icon-assets-OneDrive":"cc4d8b27ee632a63be89","icon-assets-OneNote":"e476bdc08b1985a3602a","icon-assets-Onetoc":"0b674d0da04deb98adc7","icon-assets-Open":"f8f263df5374f64e3268","icon-assets-OpenSquared":"43c3cdfa20b3b1fb4358","icon-assets-Outlook":"7ebc400cf1fd1833ac14","icon-assets-PartlyCloudyDay":"be275ed0cab1744b13a5","icon-assets-PartlyCloudyDayWhite":"2a440b28a03c3b19cc83","icon-assets-PartlyCloudyDayV2":"0eb02f4f1aeda1976a35","icon-assets-PartlyCloudyDayV3":"eb52bfd1b5f08d3d7d41","icon-assets-PartlyCloudyNight":"0cf4adf09fbec23f583d","icon-assets-PartlyCloudyNightWhite":"3f06baa6063ab575c527","icon-assets-PartlyCloudyNightV2":"3b75127176936e09c8b6","icon-assets-Pdf":"6d884b3df1b702492250","icon-assets-People":"90b0ddbc55af3209c184","icon-assets-Pencil":"b7a08314db678b5f9488","icon-assets-PHAdd":"407a7dde8026561d39ce","icon-assets-PHAlert":"fc725d6d69006da9ecf3","icon-assets-PHArrowRight":"8d02f42f58955c91f7de","icon-assets-PHCalendar":"06a4d6f7ea3b046ab1a6","icon-assets-PHEllipsis":"c3dd0afd5ec7a5cd4301","icon-assets-PHEmptyTasks":"fa2f09dfe2ca8d803464","icon-assets-PHTodoEmptyTasks":"58606810ec9e3cd1f6af","icon-assets-PHFavorite":"7724b8226ce5f191418e","icon-assets-PHFavoriteFilled":"47ab6a4451cdf7ed77c8","icon-assets-PHNoTask":"a3762b724fe5919445ce","icon-assets-PHToDo":"d0fba37f85fdb0583a6d","icon-assets-PHExcel":"949c2a6f594b59b409ad","icon-assets-PHExcelFile":"cc34511e3960d3aefefd","icon-assets-PHFluidFile":"4a88c696b4ab72527339","icon-assets-PHFormFile":"e92c843e8394fbbcaad1","icon-assets-PHGenericFile":"9c53d6aa3dc35bd9d058","icon-assets-PHOneDrive":"99913cb3cf52850c7ca5","icon-assets-PHOneNote":"4f005688d491a8d1bd2c","icon-assets-PHOneNoteFile":"3df5063a0d17819afcc7","icon-assets-PHOutlook":"3f9721ccdc4400ea3a30","icon-assets-PHPDFFile":"73059d84e4e8ea05ed78","icon-assets-PHPowerBIFile":"e021a7c2ff0b5f8f1718","icon-assets-PHPowerPoint":"ef2e7eea5a61d3f354d1","icon-assets-PHPowerPointFile":"badc4f97b3f4ba92cbe2","icon-assets-PHProjectFile":"b66bc50297fdc73f2b00","icon-assets-PHSharepoint":"8c3342ed4cf8b2418707","icon-assets-PHSharePointFile":"65dfc998ce485133bb98","icon-assets-PHSharePointNewsFile":"615c14ad8cb9d544ec32","icon-assets-PHStream":"717afd9ec02805b87e7e","icon-assets-PHStreamFile":"5e5aede0a07730e68937","icon-assets-PHSwayFile":"81854467e3639d68fdd4","icon-assets-PHVideoFile":"08887c5009492e7b1506","icon-assets-PHVisioFile":"353207e75b73b927c86f","icon-assets-PHWord":"5cc507a8ea549f306530","icon-assets-PHWordFile":"5c45d7298358332bcfc5","icon-assets-Pin":"df8a6e269f26ef1c6fea","icon-assets-Plus":"422f5e5413affbd91c92","icon-assets-PopoverArrow":"424e9505c98dfe3283af","icon-assets-PowerBI":"34606a9c382c431f2a42","icon-assets-PowerPoint":"6d08ff6cb233bb218a1a","icon-poll-results":"a4f4b5c15a7440fa906a","icon-assets-Pptx":"b78b5c0fc8f0fd3d2d03","icon-assets-PresenceAvailable":"0f1fe5b051cb96e04bfe","icon-assets-PresenceAway":"d8309178303e2f5f8bb0","icon-assets-PresenceBusy":"5acf6571888aa48696c5","icon-assets-PresenceOof":"c108015de50ae376c84b","icon-assets-PresenceOofAvailable":"1f91e2e7441271701286","icon-assets-PresenceOofBusy":"001cdb452f73b7d30161","icon-assets-PresenceUnknown":"ddc5984ff4671acfa044","icon-assets-PriceDrop":"c7511054dfc69f2f8860","icon-assets-PriceDropBlue":"01aa351785c7b06078a0","icon-assets-Project":"9ed1fbbeeeeccd5f9f9a","icon-assets-Radar":"6fde70b0b85e0cf72c59","icon-assets-RainShowersDay":"5d9401f4b706b229ae7d","icon-assets-RainShowersDayWhite":"b6f724edfa4121b2a7db","icon-assets-RainShowersDayV2":"1231a2c3eebeb561c868","icon-assets-RainShowersNight":"46af31dbf9b390f43270","icon-assets-RainShowersNightWhite":"29da9d47896af458c0be","icon-assets-RainShowersNightV2":"8e45ee3618b30d3945b2","icon-assets-RainSnow":"fab5b8e73e7e9753c51e","icon-assets-RainSnowWhite":"dd4f041c33fff120f71a","icon-assets-RainSnowV2":"74f4436fab6088e2e1b1","icon-assets-RainSnowShowersDay":"86b8732bfa1a4c2e6b97","icon-assets-RainSnowShowersDayWhite":"ac2381968ed8a2c879c9","icon-assets-RainSnowShowersNight":"abf1337a5da3e219df23","icon-assets-RainSnowShowersNightWhite":"beeb2a08190875507783","icon-assets-RainSnowShowersNightV2":"98b591921870394d8a29","icon-assets-Rating":"fee6df135016453b7ee0","icon-assets-RatingEmpty":"372fbc3e01a1306d5a83","icon-assets-RatingEmptyDark":"e466de794ed6b9c0cc99","icon-assets-RatingPartial":"cbffb3b48b2935169181","icon-assets-RatingPartialDark":"63a3d516c5121a3f0f6c","icon-assets-RecommendedEmpty":"cbf24371fb5a0f4ece50","icon-assets-RecommendedError":"c78805a20d3f647b135f","icon-assets-Refresh":"c2cb54fd59bbacb80620","icon-assets-RefreshV2":"49d34df3cba33ff0cc8a","icon-assets-Remove":"971c1207ffdd2fba5813","icon-assets-VideoMediaIcon":"92fbd9c3a011612b72aa","icon-assets-VideoMediaIconV2":"c3101b1a1e03ca891993","icon-assets-VideoPlay":"07320e7b009df98b874d","icon-assets-Save":"46157a07ef830e3f056f","icon-assets-Saved":"43067bcf5e48e62fc55c","icon-assets-SavedV2":"62a16830bbd06c5e88a0","icon-assets-SaveV2":"1ae2fde2d2f1bf84f9fa","icon-assets-SaveV2Fill":"a24fad0a5c2a1ae4c336","icon-assets-SaveV3":"af311c1744acd51d06f3","icon-assets-SaveV3Fill":"a4694592d4e18746d898","icon-assets-SavedV4":"128689ccafd1153d82cc","icon-assets-SaveV4":"9f0e33d6c0ec245f3fab","icon-assets-ScrollToTopArrow":"341a05e55af489575ff8","icon-assets-SetHome":"6df9ce10340eb3694e57","icon-assets-SevereWeather":"bcecc59825eaed77144f","icon-assets-Search":"91b7d57bab434091372a","icon-assets-SearchV2":"12ba735feae35be9da80","icon-assets-Settings":"0c03fc05fc945efe0e81","icon-assets-Share":"6f8ed0367dab808eb8f8","icon-assets-ShareV2":"3df2f8211e4a7d8320c5","icon-assets-ShareLight":"cad5b5781b334bbbaa0e","icon-assets-ShareNoFill":"846aa1b8252909d921fa","icon-assets-ShareRoundedCorners":"79d18f5c555dffb8bb43","icon-assets-Sharepoint":"7f9193fa7904e45502ab","icon-assets-Shopping":"7614028624324083cc23","icon-assets-ShoppingDealsDark":"af9cd3686fc6c0d13e44","icon-assets-ShoppingDealsLight":"ceb7f71ca7dd2a8f6540","icon-assets-SportsIcon":"d9f3e685b74136329c50","icon-assets-Skype":"fac2971c43bef057e7a8","icon-assets-SkypeOffice":"26a6035fc0fbc5f46b4e","icon-assets-SlugInfo":"c72161107c8624c25d08","icon-assets-SlugInfoDark":"fe7f3a8808d32d80b510","icon-assets-SnowShowersDay":"f731963a98cff1f89602","icon-assets-SnowShowersDayWhite":"576b6e829d9cb7937c0d","icon-assets-SnowShowersDayV2":"41392a465fd376bbd8d2","icon-assets-SnowShowersNight":"4cd0bedbf00bcb60cfd2","icon-assets-SnowShowersNightWhite":"3b88522d5c862e673746","icon-assets-SnowShowersNightV2":"cb95e1beaf9fb269a135","icon-assets-Star":"04658edea853e0069e34","icon-assets-StarFill":"0452b41bbf1f11ee7d07","icon-assets-StarFollow":"abdc3138ec9784290d0f","icon-assets-StarFollowBlue":"d22766468b6a9036901e","icon-assets-StarGear":"535bf08f037e1c6427bd","icon-assets-StarOutline":"65fb91cac4bf530f1017","icon-assets-Stars":"d5ed8dab242fbdb16e8f","icon-assets-SunnyDay":"de743cade0d1082a7183","icon-assets-SunnyDayOutline":"1f597368ffa76929e64c","icon-assets-SunnyDayWhite":"852970d8fa15025c51b8","icon-assets-SunnyDayV2":"35d143f89b07bcc08e04","icon-assets-SunnyDayV3":"c4d955f72dcd42f11705","icon-assets-MostlySunnyDay":"6a8c3683c7aea199ca79","icon-assets-MostlyClearNight":"efee83bec2cebb112e97","icon-assets-MostlyCloudyDay":"d2ec2fed022f778f236d","icon-assets-MostlyCloudyNight":"c1b9fc5691a0b258d044","icon-assets-LightRainV3":"8ab19ef93aa8ceb3d481","icon-assets-MostlyCloudy":"2bca73f55b31775745a1","icon-assets-Personalize":"7623ec8d8d49c06aa9ea","icon-assets-MostlyCloudyDayV2":"d57919ec48b15c731454","icon-assets-MostlyCloudyNightV2":"721e713fd842b732b224","icon-assets-Sway":"9610b1e7e20d9e562343","icon-assets-SwayApp":"5e9a351b8180c769f248","icon-assets-Teams":"f09dda4fb206123987eb","icon-assets-TextExpand":"3d66dacc3c47c45b629b","icon-assets-ThumbnailView":"4362625753db4ca0bf47","icon-assets-ThumbDown":"5ffc1b872b25a70eb724","icon-assets-ThumbDownBlue":"ee920eea4621c36da71f","icon-assets-ThumbUp":"2258afa36ce6253564cc","icon-assets-ThumbUp3Fill":"8d4d36d8b4322368f135","icon-assets-ThumbUpBlue":"b8c7d29d6871995dfe75","icon-assets-ThumbUpFill":"efa17819495cf1ea1b93","icon-assets-ThumbUpFill2":"611e93cd3b3b61473b60","icon-assets-ThumbsUpAndDown":"38d097ec8c0781ed6cf3","icon-assets-Thunderstorms":"beb29c833ecc3ec077f7","icon-assets-ThunderstormsWhite":"8f7c2b697867703958e0","icon-assets-ThunderstormsV2":"d126331a22f7401c893b","icon-assets-TodaysEventsEmpty":"e0c6a2dc65ff83362340","icon-assets-TodaysEventsError":"3698ee62a95ce078214a","icon-assets-Traffic":"dae07cc24aacaa8dc2a1","icon-assets-TrafficCamera":"859076eb7eeab5fad7fc","icon-assets-TrafficIncident":"d54b3b89752994a90d62","icon-assets-TrafficSwitchDirections":"fb20b6f7eeacf9ecd1af","icon-assets-Trending":"08f2bccdcaf6701ae1f4","icon-assets-Twitter":"11b78b0b019dc0d15b4a","icon-assets-TwitterBlack":"d40a5844bd69b2dd4ba7","icon-assets-TwitterNoFill":"4de196caaaced1834b68","icon-assets-TwitterText":"1edad1695f6b4b663d9a","icon-assets-Unpin":"149582907351c0fb6001","icon-assets-VerticalSeparator":"fc4f26405b006cfc5331","icon-assets-Video":"3658fcf86cd07054cebc","icon-assets-VideoAD":"b6bfed540ab011a38d87","icon-assets-VideoCC":"b10970da53d2d6d68e91","icon-assets-VideoCircle":"649e0ce3cf83e802b2dd","icon-assets-VideoCircleOutline":"12ecd225de9ec20269c8","icon-assets-VideoFacebook":"c5619cabdcccc97385d4","icon-assets-VideoFallback":"b925c0e723673a762553","icon-assets-VideoFullScreen":"5bb3267e0d441a83cc5c","icon-assets-VideoGoogle":"91ac70535d9c34f8d470","icon-assets-VideoHD":"21916e403b2c60efa63d","icon-assets-VideoHeadphone":"352fd21d25140c6ad0e7","icon-assets-VideoInnerCircle":"ae1571795baeac8687cc","icon-assets-VideoLinkedIn":"1c0333711c3290dbaad7","icon-assets-VideoList":"4cec34768de2dd1dd446","icon-assets-VideoMute":"d416694446dce8bbfc96","icon-assets-VideoNext":"9ca489a7285140a5d506","icon-assets-VideoOriginalScreen":"1fd1e2b9894c836ba973","icon-assets-VideoPause":"22ebd51af5dcd8b85b92","icon-assets-VideoPinterest":"4bd31adbed1b7d475881","icon-assets-VideoPIP":"3b5c65ba4bccdb4a7977","icon-assets-VideoPlayBig":"1d2d2fc97989bd38f493","icon-assets-VideoPlayCircle":"ea2e9c31c90ab583a341","icon-assets-VideoPlaySmall":"d18c40a822d285250c57","icon-assets-VideoPrev":"72d18ffd6017cb24646b","icon-assets-VideoReplay":"5ce345b01cfe5214a1f9","icon-assets-VideoSetting":"06028b9574b3d1d7bb75","icon-assets-VideoShare":"67e2d05eb996afce4785","icon-assets-VideoSpinner":"23ffdef362c572324a55","icon-assets-VideoSquare":"1882023c7f4061d636d5","icon-assets-VideoStop":"607e008d9ad404519489","icon-assets-VideoSubtitle":"251408f86a5f3b1e4673","icon-assets-VideoTumblr":"805141aec7f5aa100a93","icon-assets-VideoTwitter":"897be7727c7646691807","icon-assets-VideoUnmute":"8e04315f88fae8bef567","icon-assets-VideoVolume0":"5f30f218857302488202","icon-assets-VideoVolume1":"7225e8035cc2a985423a","icon-assets-Visio":"01b8d9cb3ed85df86e60","icon-assets-Vkcom":"dcc751c9908113f5ca87","icon-assets-Vsdx":"e8b06baee54df10328f5","icon-assets-WaterDrop":"80c8a90dd24f388370ce","icon-assets-WaterDropL2":"e72da7c3b016fe8fed72","icon-assets-WeatherAlert":"e533a6e2f82f4701cc64","icon-assets-WeatherAQI":"068988319b0aa7996156","icon-assets-WeatherBarometer":"3e22fe70223de8df5f9a","icon-assets-WeatherCloud":"b5f0629fc753c8f07237","icon-assets-WeatherDaylight":"45437673dd7630f5be2d","icon-assets-WeatherNightlight":"61bb86f0088a404693e7","icon-assets-WeatherNoRain":"1385b2bb83a6595a5809","icon-assets-WeatherDewpoint":"74648fbfe6ff5d36013f","icon-assets-WeatherExpand":"736eaddff21eb8eba9d8","icon-assets-WeatherHumidity":"c60d004ab4bf98bae898","icon-assets-WeatherIcon":"af7da6c9184023079d08","icon-assets-WeatherMapPause":"c32f0064f140e32fefe5","icon-assets-WeatherMapPlay":"53632bbf61898478fff2","icon-assets-WeatherMapLoading":"51473d5d3224a85e48d2","icon-assets-WeatherPrecipitation":"c787304d2870293d929b","icon-assets-WeatherSatellite":"ef5109d5f39ebe05c902","icon-assets-WeatherSunrise":"274e9bbd82d6de0450b3","icon-assets-WeatherSunset":"9ddf91653d4ddcd3a409","icon-assets-WeatherSunrise2":"c46996e3456dc387ea0e","icon-assets-WeatherSunset2":"42e4e9f410d8feed04b9","icon-assets-WeatherMoonrise":"1b23338274cc4cf431e3","icon-assets-WeatherMoonset":"94b82dcf257fb4e21306","icon-assets-WeatherLightRain":"7458a80b4aaebbe7e784","icon-assets-WeatherMiddleRain":"2fcaa76d9b0c323d27a6","icon-assets-WeatherHeavyRain":"1947759a5ffff1e5420f","icon-assets-WeatherLightSnow":"e78fdaf42b4dd8d7aace","icon-assets-WeatherMiddleSnow":"1a77455aca449c32b698","icon-assets-WeatherHeavySnow":"6afc185b87f2d8cee834","icon-assets-WeatherLightMix":"f14bce00c02be7becbac","icon-assets-WeatherMiddleMix":"a0cc29b385c84a5a9a99","icon-assets-WeatherHeavyMix":"0c0d87f78e263f6b030a","icon-assets-WeatherRainGrey":"e89a7b831eddeef8ad73","icon-assets-WeatherSnowGrey":"2e05e90392ee54025fee","icon-assets-WeatherTemp":"4ef5d861903486cfa3a2","icon-assets-WeatherTemperature":"f3f9cfa0d309d6fc87df","icon-assets-WeatherUv":"679d79313a9df6920d2f","icon-assets-WeatherVisiblity":"ed520f1d78fc6eb7cfd9","icon-assets-WeatherWind":"9dd728aa1dacba7495f6","icon-assets-WeatherWildfire":"2f6759ea076fb6ddbd95","icon-assets-WeatherWindDir":"339022903d420ca6d350","icon-assets-WebContent":"8b067dcb308f708e2dcb","icon-assets-WeeklyAdsDark":"4952ae30c6c2c73ffcd6","icon-assets-WeeklyAdsLight":"17f4d12b2f0393fe05b3","icon-assets-WhatsApp":"2bae7eaf3e23832e1c00","icon-assets-WhatsAppBlack":"d9cc41ab44ca8dc642d9","icon-assets-Windy":"09951fd7e99b9bf08c7f","icon-assets-WindyWhite":"9a498aea5fc860d55701","icon-assets-WindyV2":"de10df44e772a1e13efe","icon-assets-Winterstorm":"d43eeeb87513798318e0","icon-assets-Word":"8929a36cccb4c884bb63","icon-assets-World":"de8f1ff241412a1e1eee","icon-assets-Xlsx":"d90db86148b356c88ba3","icon-assets-Yammer":"ded172364d5c4d9a3fb5","icon-assets-AdsVideoReplay":"e10122317143c0158928","icon-assets-ArrowLeft":"d2e70f7f45f5f0baf67c","icon-assets-ArrowRight":"d24e8a59f58449777bdf","icon-assets-ArrowRightWhite":"33872157c530ed7bcc0a","icon-assets-ArrowLeftWhite":"16591633aeb953e7c1d2","icon-assets-ExclamMark":"e202e2e9f898f8b7e873","icon-assets-SunRiseLightDynamicV1":"eed140a4dd9c1a53d433","icon-assets-MoonRiseLightDynamicV1":"a65b4144418180698d7f","icon-assets-MoonRiseLightDynamicRevertV1":"59558ab6c139a2a26a7e","icon-assets-NarrowDown":"be17a67878b9e7135979","cold-start-gif":"05ea6cc30c2f0977775a","libs_traffic-chart-utils_dist_index_js":"12bf0722ec19678a678b",VpReadyHelper:"a75547cb104126095d6f","web-components_native-ad-video_dist_index_js":"b3d29076ed3d0742c2c2",nativeadsdecorations:"990b5e4e18b98057fec1",nativeadstemplates:"88abb968e5940737a3d3","native-ad-like-button":"68a5d03024e2d997e0d8","native-ad-trending":"0170e00a2d7de64c7c7e","native-ad-call-to-action":"2a74d2bf16e40627a28a","native-ad-sales-highlight-v1":"847e34a882daaa0af7a1","native-ad-sales-highlight-v3v4":"f899fae2a4c0ee0a240e","native-ad-decoration-combo":"c5bb0f163e4c68b13014","experiences_sports-card-wc_dist_components_sports-hidepopup_index_js":"8546031ecb166e661528","experiences_sports-card-wc_dist_components_sports-hidereminder_index_js":"ae9497af3f64232277a7","experiences_sports-card-wc_dist_components_sports-feedback_index_js":"842b296ee406569e692a","experiences_sports-card-wc_dist_components_sports-coldstart_index_js":"059f22891222fbb13f6a","libs_video-card-plugin-factory_dist_virtualadsplayer_plugin_js":"245bbb9ca83c11280cb4","experiences_weather-card-wc_dist_components_weather-hide-dialog_index_js":"496e97d585c80ed2bb71","experiences_weather-card-wc_dist_components_weather-hide-remind_index_js":"befd0f06c0995c8adb0d","experiences_weather-card-wc_dist_components_weather-report-issue_index_js":"0365776b58b21a90d27b","libs_finance-service-library_dist_index_js":"0e718744e87511792ff6","web-components_super-cards_dist_cards_sub-components_card-action-tray_OptedOutReactionTemplate_js":"841dcbd2bb11cf32bc8f"}[e]+".js"},c.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),c.hmd=function(e){return(e=Object.create(e)).children||(e.children=[]),Object.defineProperty(e,"exports",{enumerable:!0,set:function(){throw new Error("ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: "+e.id)}}),e},c.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n={},i="@msnews/msnews-experiences:",c.l=function(e,t,a,o){if(n[e])n[e].push(t);else{var s,d;if(void 0!==a)for(var r=document.getElementsByTagName("script"),l=0;l<r.length;l++){var b=r[l];if(b.getAttribute("src")==e||b.getAttribute("data-webpack")==i+a){s=b;break}}s||(d=!0,(s=document.createElement("script")).charset="utf-8",s.timeout=120,c.nc&&s.setAttribute("nonce",c.nc),s.setAttribute("data-webpack",i+a),s.src=e,0!==s.src.indexOf(window.location.origin+"/")&&(s.crossOrigin="anonymous")),n[e]=[t];var f=function(t,a){s.onerror=s.onload=null,clearTimeout(p);var i=n[e];if(delete n[e],s.parentNode&&s.parentNode.removeChild(s),i&&i.forEach((function(e){return e(a)})),t)return t(a)},p=setTimeout(f.bind(null,void 0,{type:"timeout",target:s}),12e4);s.onerror=f.bind(null,s.onerror),s.onload=f.bind(null,s.onload),d&&document.head.appendChild(s)}},c.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},c.nmd=function(e){return e.paths=[],e.children||(e.children=[]),e},c.p="/bundles/v1/edgeChromium/buildNumber/",function(){var e={experience:0};c.f.j=function(t,a){var n=c.o(e,t)?e[t]:void 0;if(0!==n)if(n)a.push(n[2]);else{var i=new Promise((function(a,i){n=e[t]=[a,i]}));a.push(n[2]=i);var o=c.p+c.u(t),s=new Error;c.l(o,(function(a){if(c.o(e,t)&&(0!==(n=e[t])&&(e[t]=void 0),n)){var i=a&&("load"===a.type?"missing":a.type),o=a&&a.target&&a.target.src;s.message="Loading chunk "+t+" failed.\n("+i+": "+o+")",s.name="ChunkLoadError",s.type=i,s.request=o,n[1](s)}}),"chunk-"+t,t)}},c.O.j=function(t){return 0===e[t]};var t=function(t,a){var n,i,o=a[0],s=a[1],d=a[2],r=0;if(o.some((function(t){return 0!==e[t]}))){for(n in s)c.o(s,n)&&(c.m[n]=s[n]);if(d)var l=d(c)}for(t&&t(a);r<o.length;r++)i=o[r],c.o(e,i)&&e[i]&&e[i][0](),e[i]=0;return c.O(l)},a=self.webpackChunk_msnews_msnews_experiences=self.webpackChunk_msnews_msnews_experiences||[];a.forEach(t.bind(null,0)),a.push=t.bind(null,a.push.bind(a))}();var d=c.O(void 0,["common","vendors","microsoft"],(function(){return c(95640)}));d=c.O(d)}();
